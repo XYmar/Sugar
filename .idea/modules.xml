@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/sugar-config-server/sugar-config-server.iml" filepath="$PROJECT_DIR$/sugar-config-server/sugar-config-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sugar-eureka-server/sugar-eureka-server.iml" filepath="$PROJECT_DIR$/sugar-eureka-server/sugar-eureka-server.iml" />
       <module fileurl="file://$PROJECT_DIR$/sugar-user-service/sugar-user-service.iml" filepath="$PROJECT_DIR$/sugar-user-service/sugar-user-service.iml" />
     </modules>
   </component>
