@@ -19,6 +19,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    // 保存用户
     public UserEntity saveUser(UserEntity userEntity) {
         if (userEntity == null) {
             throw new RuntimeException(ApplicationMessage.USER_ARGS_NOT_FOUND);
@@ -56,6 +57,7 @@ public class UserService {
         return userRepository.save(userEntity);
     }
 
+    // 查询所有用户
     public List<UserEntity> getAll() {
         return userRepository.findAll();
     }
@@ -72,21 +74,35 @@ public class UserService {
     // 根据Id修改用户
     @CacheEvict(value = "User_Cache", allEntries = true)
     public UserEntity updateUserById(String userId, UserEntity userEntityArgs) {
+        if (StringUtils.isEmpty(userId)) {
+            throw new RuntimeException(ApplicationMessage.USER_ID_NOT_FOUND);
+        }
         UserEntity userEntity = getUserById(userId);
+        if (userEntityArgs == null) {
+            throw new RuntimeException(ApplicationMessage.USER_ARGS_NOT_FOUND);
+        }
+
         if (!StringUtils.isEmpty(userEntityArgs.getUsername()) && !userEntity.getUsername().equals(userEntityArgs.getUsername())) {
+            if (hasUserByUsername(userEntityArgs.getUsername())) {
+                throw new RuntimeException(ApplicationMessage.USER_USERNAME_EXISTED + userEntityArgs.getUsername());
+            }
             userEntity.setUsername(userEntityArgs.getUsername());
         }
         if (!StringUtils.isEmpty(userEntityArgs.getTelephoneNum()) && !userEntity.getTelephoneNum().equals(userEntityArgs.getTelephoneNum())) {
+            if (hasUserByTelephoneNum(userEntityArgs.getTelephoneNum())) {
+                throw new RuntimeException(ApplicationMessage.USER_TelephoneNum_EXISTED);
+            }
             userEntity.setTelephoneNum(userEntityArgs.getTelephoneNum());
         }
         if (!StringUtils.isEmpty(userEntityArgs.getEmail()) && !userEntity.getEmail().equals(userEntityArgs.getEmail())) {
+            if (hasUserByEmail(userEntityArgs.getEmail())) {
+                throw new RuntimeException(ApplicationMessage.USER_Email_EXISTED);
+            }
             userEntity.setEmail(userEntityArgs.getEmail());
         }
 
-        if (StringUtils.isEmpty(userEntityArgs.getPassword())) {
-            throw new RuntimeException(ApplicationMessage.USER_PASSWORD_ARGS_NOT_FOUND);
-        } else {
-            userEntity.setPassword(userEntityArgs.getPassword());
+        if (!StringUtils.isEmpty(userEntityArgs.getPassword())) {
+            userEntity.setPassword(new BCryptPasswordEncoder().encode(userEntityArgs.getPassword()));
         }
         return userRepository.save(userEntity);
     }

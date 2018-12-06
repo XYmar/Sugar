@@ -13,11 +13,13 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    // 添加用户
     @PostMapping
     public UserEntity saveUser(UserEntity userEntity) {
         return userService.saveUser(userEntity);
     }
 
+    // 查询所有用户
     @GetMapping
     public List<UserEntity> getUsers() {
         return userService.getAll();
@@ -29,9 +31,9 @@ public class UserController {
         return userService.getUserById(userId);
     }
 
-    // 根据Id修改设备
+    // 根据Id修改用户
     @PatchMapping(value = "/{userId}")
-    public UserEntity updateUserById(@PathVariable(value = "userId") String deviceId, UserEntity userEntity) {
-        return userService.updateUserById(deviceId, userEntity);
+    public UserEntity updateUserById(@PathVariable(value = "userId") String userId, UserEntity userEntity) {
+        return userService.updateUserById(userId, userEntity);
     }
 }
