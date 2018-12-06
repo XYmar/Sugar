@@ -107,6 +107,17 @@ public class UserService {
         return userRepository.save(userEntity);
     }
 
+    // 根据id修改密码
+    @CacheEvict(value = "User_Cache", allEntries = true)
+    public UserEntity updateUserPasswordById(String userId, String password) {
+        if (StringUtils.isEmpty(password)) {
+            throw new RuntimeException(ApplicationMessage.USER_PASSWORD_ARGS_NOT_FOUND);
+        }
+        UserEntity userEntity = getUserById(userId);
+        userEntity.setPassword(new BCryptPasswordEncoder().encode(password));
+        return userRepository.save(userEntity);
+    }
+
     // 根据Id删除用户
     @CacheEvict(value = "User_Cache", allEntries = true)
     public UserEntity deleteUserById(String userId) {
@@ -146,4 +157,5 @@ public class UserService {
         }
         return userRepository.findByEmail(email).isPresent();
     }
+
 }
