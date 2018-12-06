@@ -11,6 +11,7 @@ import java.util.UUID;
 @Entity
 @Data
 public class UserEntity {
+
     @Id
     private String id = UUID.randomUUID().toString();
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
@@ -23,5 +24,4 @@ public class UserEntity {
     private boolean accountNonLocked = true;
     private boolean credentialsNonExpired = true;
     private boolean enabled = true;
-
 }
