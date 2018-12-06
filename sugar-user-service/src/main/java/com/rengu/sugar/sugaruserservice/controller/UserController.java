@@ -36,4 +36,10 @@ public class UserController {
     public UserEntity updateUserById(@PathVariable(value = "userId") String userId, UserEntity userEntity) {
         return userService.updateUserById(userId, userEntity);
     }
+
+    // 删除用户
+    @DeleteMapping(value = "/{userId}")
+    public UserEntity deleteUserById(@PathVariable(value = "userId") String userId) {
+        return userService.deleteUserById(userId);
+    }
 }

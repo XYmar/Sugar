@@ -107,6 +107,14 @@ public class UserService {
         return userRepository.save(userEntity);
     }
 
+    // 根据Id删除用户
+    @CacheEvict(value = "User_Cache", allEntries = true)
+    public UserEntity deleteUserById(String userId) {
+        UserEntity userEntity = getUserById(userId);
+        userRepository.delete(userEntity);
+        return userEntity;
+    }
+
     // 根据Id判断用户是否存在
     public boolean hasUserById(String userId) {
         if (StringUtils.isEmpty(userId)) {
