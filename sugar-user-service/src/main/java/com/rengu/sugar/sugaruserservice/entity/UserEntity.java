@@ -17,6 +17,8 @@ public class UserEntity {
     private Date createTime = new Date();
     private String username;
     private String password;
+    private String telephoneNum;
+    private String email;
     private boolean accountNonExpired = true;
     private boolean accountNonLocked = true;
     private boolean credentialsNonExpired = true;
