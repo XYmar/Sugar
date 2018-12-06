@@ -5,6 +5,7 @@
       <list>
         <option value="$PROJECT_DIR$/sugar-config-server/pom.xml" />
         <option value="$PROJECT_DIR$/sugar-user-service/pom.xml" />
+        <option value="$PROJECT_DIR$/sugar-eureka-server/pom.xml" />
       </list>
     </option>
   </component>
