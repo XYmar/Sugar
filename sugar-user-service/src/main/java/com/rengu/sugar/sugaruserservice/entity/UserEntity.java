@@ -4,8 +4,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import java.util.Date;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -24,4 +27,6 @@ public class UserEntity {
     private boolean accountNonLocked = true;
     private boolean credentialsNonExpired = true;
     private boolean enabled = true;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<RoleEntity> roleEntities;
 }
