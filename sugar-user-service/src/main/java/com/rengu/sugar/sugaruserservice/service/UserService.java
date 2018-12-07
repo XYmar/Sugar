@@ -7,6 +7,7 @@ import io.micrometer.core.instrument.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,10 +17,16 @@ import java.util.List;
 @Service
 @Slf4j
 public class UserService {
+
+    private final UserRepository userRepository;
+
     @Autowired
-    private UserRepository userRepository;
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     // 保存用户
+    @CachePut(value = "User_Cache", key = "#userEntity.getId()")
     public UserEntity saveUser(UserEntity userEntity) {
         if (userEntity == null) {
             throw new RuntimeException(ApplicationMessage.USER_ARGS_NOT_FOUND);
@@ -34,11 +41,11 @@ public class UserService {
         userEntity.setPassword(new BCryptPasswordEncoder().encode(userEntity.getPassword()));
 
         if (StringUtils.isEmpty(userEntity.getTelephoneNum())) {
-            throw new RuntimeException(ApplicationMessage.USER_TelephoneNum_ARGS_NOT_FOUND);
+            throw new RuntimeException(ApplicationMessage.USER_TELEPHONENUM_ARGS_NOT_FOUND);
         }
 
         if (StringUtils.isEmpty(userEntity.getEmail())) {
-            throw new RuntimeException(ApplicationMessage.USER_Email_ARGS_NOT_FOUND);
+            throw new RuntimeException(ApplicationMessage.USER_EMAIL_ARGS_NOT_FOUND);
         }
 
         //去重
@@ -47,11 +54,11 @@ public class UserService {
         }
 
         if (hasUserByTelephoneNum(userEntity.getTelephoneNum())) {
-            throw new RuntimeException(ApplicationMessage.USER_TelephoneNum_EXISTED);
+            throw new RuntimeException(ApplicationMessage.USER_TELEPHONENUM_EXISTED);
         }
 
         if (hasUserByEmail(userEntity.getEmail())) {
-            throw new RuntimeException(ApplicationMessage.USER_Email_EXISTED);
+            throw new RuntimeException(ApplicationMessage.USER_EMAIL_EXISTED);
         }
 
         return userRepository.save(userEntity);
@@ -72,7 +79,7 @@ public class UserService {
     }
 
     // 根据Id修改用户
-    @CacheEvict(value = "User_Cache", allEntries = true)
+    @CachePut(value = "User_Cache", key = "#userId")
     public UserEntity updateUserById(String userId, UserEntity userEntityArgs) {
         if (StringUtils.isEmpty(userId)) {
             throw new RuntimeException(ApplicationMessage.USER_ID_NOT_FOUND);
@@ -90,13 +97,13 @@ public class UserService {
         }
         if (!StringUtils.isEmpty(userEntityArgs.getTelephoneNum()) && !userEntity.getTelephoneNum().equals(userEntityArgs.getTelephoneNum())) {
             if (hasUserByTelephoneNum(userEntityArgs.getTelephoneNum())) {
-                throw new RuntimeException(ApplicationMessage.USER_TelephoneNum_EXISTED);
+                throw new RuntimeException(ApplicationMessage.USER_TELEPHONENUM_EXISTED);
             }
             userEntity.setTelephoneNum(userEntityArgs.getTelephoneNum());
         }
         if (!StringUtils.isEmpty(userEntityArgs.getEmail()) && !userEntity.getEmail().equals(userEntityArgs.getEmail())) {
             if (hasUserByEmail(userEntityArgs.getEmail())) {
-                throw new RuntimeException(ApplicationMessage.USER_Email_EXISTED);
+                throw new RuntimeException(ApplicationMessage.USER_EMAIL_EXISTED);
             }
             userEntity.setEmail(userEntityArgs.getEmail());
         }
@@ -108,7 +115,7 @@ public class UserService {
     }
 
     // 根据id修改密码
-    @CacheEvict(value = "User_Cache", allEntries = true)
+    @CachePut(value = "User_Cache", key = "#userId")
     public UserEntity updateUserPasswordById(String userId, String password) {
         if (StringUtils.isEmpty(password)) {
             throw new RuntimeException(ApplicationMessage.USER_PASSWORD_ARGS_NOT_FOUND);
@@ -119,7 +126,7 @@ public class UserService {
     }
 
     // 根据Id删除用户
-    @CacheEvict(value = "User_Cache", allEntries = true)
+    @CacheEvict(value = "User_Cache", key = "#userId")
     public UserEntity deleteUserById(String userId) {
         UserEntity userEntity = getUserById(userId);
         userRepository.delete(userEntity);
@@ -157,5 +164,4 @@ public class UserService {
         }
         return userRepository.findByEmail(email).isPresent();
     }
-
 }
