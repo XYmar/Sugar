@@ -1,14 +1,16 @@
-package com.rengu.sugar.sugarapigatewayserver;
+package com.rengu.sugar.sugaruserapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
+@EnableFeignClients
 @EnableDiscoveryClient
 @SpringBootApplication
-public class SugarApiGatewayServerApplication {
+public class SugarUserApiApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SugarApiGatewayServerApplication.class, args);
+        SpringApplication.run(SugarUserApiApplication.class, args);
     }
 }

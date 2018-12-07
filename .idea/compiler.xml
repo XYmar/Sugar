@@ -10,6 +10,7 @@
         <module name="sugar-authorization-server" />
         <module name="sugar-config-server" />
         <module name="sugar-eureka-server" />
+        <module name="sugar-user-api" />
         <module name="sugar-user-service" />
       </profile>
     </annotationProcessing>
@@ -18,6 +19,7 @@
       <module name="sugar-authorization-server" target="1.8" />
       <module name="sugar-config-server" target="1.8" />
       <module name="sugar-eureka-server" target="1.8" />
+      <module name="sugar-user-api" target="1.8" />
       <module name="sugar-user-service" target="1.8" />
     </bytecodeTargetLevel>
   </component>
@@ -27,6 +29,7 @@
       <module name="sugar-authorization-server" options="-parameters" />
       <module name="sugar-config-server" options="-parameters" />
       <module name="sugar-eureka-server" options="-parameters" />
+      <module name="sugar-user-api" options="-parameters" />
       <module name="sugar-user-service" options="-parameters" />
     </option>
   </component>
