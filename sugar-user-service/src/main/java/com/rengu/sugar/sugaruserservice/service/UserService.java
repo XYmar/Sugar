@@ -205,4 +205,10 @@ public class UserService {
         }
         return userRepository.findByEmail(email).isPresent();
     }
+
+    public List<UserEntity> getUserByRoleId(String roleId) {
+        RoleEntity roleEntity = roleService.getRoleById(roleId);
+
+        return userRepository.findByRoleEntities(roleEntity);
+    }
 }
