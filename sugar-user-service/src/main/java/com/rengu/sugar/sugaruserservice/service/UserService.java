@@ -7,6 +7,7 @@ import com.rengu.sugar.sugaruserservice.utils.ApplicationMessage;
 import io.micrometer.core.instrument.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -23,10 +24,13 @@ import java.util.Set;
 public class UserService {
 
     private final UserRepository userRepository;
-
+    private final RoleService roleService;
+    @Value("${config.defaultUserRoleName}")
+    private String defaultUserRoleName;
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, RoleService roleService) {
         this.userRepository = userRepository;
+        this.roleService = roleService;
     }
 
     // 保存管理员用户
@@ -63,6 +67,11 @@ public class UserService {
         if (StringUtils.isEmpty(userEntity.getEmail())) {
             throw new RuntimeException(ApplicationMessage.USER_EMAIL_ARGS_NOT_FOUND);
         }
+
+        RoleEntity role = roleService.findRoleByName(defaultUserRoleName);
+        HashSet<RoleEntity> set = new HashSet<>();
+        set.add(role);
+        userEntity.setRoleEntities(set);
 
         //去重
         if (hasUserByUsername(userEntity.getUsername())) {
