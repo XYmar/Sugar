@@ -1,5 +1,6 @@
 package com.rengu.sugar.sugaruserservice.service;
 
+import com.rengu.sugar.sugaruserservice.entity.RoleEntity;
 import com.rengu.sugar.sugaruserservice.entity.UserEntity;
 import com.rengu.sugar.sugaruserservice.repository.UserRepository;
 import com.rengu.sugar.sugaruserservice.utils.ApplicationMessage;
@@ -12,7 +13,10 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Slf4j
@@ -23,6 +27,18 @@ public class UserService {
     @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    // 保存管理员用户
+    public UserEntity saveUser(UserEntity userEntity, RoleEntity... roleEntities) {
+        Set<RoleEntity> roleEntitySet = userEntity.getRoleEntities();
+        if (roleEntitySet != null) {
+            roleEntitySet.addAll(Arrays.asList(roleEntities));
+        } else {
+            roleEntitySet = new HashSet<>(Arrays.asList(roleEntities));
+        }
+        userEntity.setRoleEntities(roleEntitySet);
+        return userRepository.save(userEntity);
     }
 
     // 保存用户
