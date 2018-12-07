@@ -10,6 +10,8 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Slf4j
 public class RoleService {
@@ -30,6 +32,11 @@ public class RoleService {
             throw new RuntimeException(ApplicationMessage.ROLE_NAME_EXISTED + roleEntity.getName());
         }
         return roleRepository.save(roleEntity);
+    }
+
+    // 查询所有用户
+    public List<RoleEntity> getAll() {
+        return roleRepository.findAll();
     }
 
     // 检查角色名称是否已存在
