@@ -36,6 +36,12 @@ public class UserController {
         return userService.getUserById(userId);
     }
 
+    // 根据角色id查询用户
+    @GetMapping(value = "/role/{roleId}")
+    public List<UserEntity> getUserByRoleId(@PathVariable(value = "roleId") String roleId) {
+        return userService.getUserByRoleId(roleId);
+    }
+
     // 根据Id修改用户
     @PatchMapping(value = "/{userId}")
     public UserEntity updateUserById(@PathVariable(value = "userId") String userId, UserEntity userEntity) {
@@ -46,6 +52,12 @@ public class UserController {
     @PatchMapping(value = "/{userId}/password")
     public UserEntity updatePasswordById(@PathVariable(value = "userId") String userId, @RequestParam(value = "password") String password) {
         return userService.updateUserPasswordById(userId, password);
+    }
+
+    // 根据Id修改角色
+    @PatchMapping(value = "/{userId}/role")
+    public UserEntity updateRoleById(@PathVariable(value = "userId") String userId, @RequestParam(value = "roleId") String roleId) {
+        return userService.updateUserRoleById(userId, roleId);
     }
 
     // 删除用户

@@ -1,28 +1,48 @@
 package com.rengu.sugar.sugaruserservice.service;
 
+import com.rengu.sugar.sugaruserservice.entity.RoleEntity;
 import com.rengu.sugar.sugaruserservice.entity.UserEntity;
 import com.rengu.sugar.sugaruserservice.repository.UserRepository;
 import com.rengu.sugar.sugaruserservice.utils.ApplicationMessage;
 import io.micrometer.core.instrument.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
-
+    private final RoleService roleService;
+    @Value("${config.defaultUserRoleName}")
+    private String defaultUserRoleName;
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, RoleService roleService) {
         this.userRepository = userRepository;
+        this.roleService = roleService;
+    }
+
+    // 保存管理员用户
+    public UserEntity saveUser(UserEntity userEntity, RoleEntity... roleEntities) {
+        Set<RoleEntity> roleEntitySet = userEntity.getRoleEntities();
+        if (roleEntitySet != null) {
+            roleEntitySet.addAll(Arrays.asList(roleEntities));
+        } else {
+            roleEntitySet = new HashSet<>(Arrays.asList(roleEntities));
+        }
+        userEntity.setRoleEntities(roleEntitySet);
+        return userRepository.save(userEntity);
     }
 
     // 保存用户
@@ -47,6 +67,11 @@ public class UserService {
         if (StringUtils.isEmpty(userEntity.getEmail())) {
             throw new RuntimeException(ApplicationMessage.USER_EMAIL_ARGS_NOT_FOUND);
         }
+
+        RoleEntity role = roleService.findRoleByName(defaultUserRoleName);
+        HashSet<RoleEntity> set = new HashSet<>();
+        set.add(role);
+        userEntity.setRoleEntities(set);
 
         //去重
         if (hasUserByUsername(userEntity.getUsername())) {
@@ -125,6 +150,22 @@ public class UserService {
         return userRepository.save(userEntity);
     }
 
+    // 根据id修改角色信息
+    @CachePut(value = "User_Cache", key = "#userId")
+    public UserEntity updateUserRoleById(String userId, String roleId) {
+        if (StringUtils.isEmpty(roleId)) {
+            throw new RuntimeException(ApplicationMessage.ROLE_ID_NOT_FOUND);
+        }
+
+        RoleEntity roleEntity = roleService.getRoleById(roleId);
+        HashSet<RoleEntity> set = new HashSet<>();
+        set.add(roleEntity);
+
+        UserEntity userEntity = getUserById(userId);
+        userEntity.setRoleEntities(set);
+        return userRepository.save(userEntity);
+    }
+
     // 根据Id删除用户
     @CacheEvict(value = "User_Cache", key = "#userId")
     public UserEntity deleteUserById(String userId) {
@@ -163,5 +204,11 @@ public class UserService {
             return false;
         }
         return userRepository.findByEmail(email).isPresent();
+    }
+
+    public List<UserEntity> getUserByRoleId(String roleId) {
+        RoleEntity roleEntity = roleService.getRoleById(roleId);
+
+        return userRepository.findByRoleEntities(roleEntity);
     }
 }

@@ -6,7 +6,7 @@ public class ApplicationMessage {
     public static final String ROLE_NAME_ARGS_NOT_FOUND = "角色名称参数不存在或不合法";
     public static final String ROLE_NAME_NOT_FOUND = "未发现该角色名称：";
     public static final String ROLE_NAME_EXISTED = "该角色名称已存在：";
-
+    public static final String ROLE_ID_NOT_FOUND = "未发现该角色id：";
     // 用户相关提示信息
     public static final String USER_ARGS_NOT_FOUND = "未发现用户参数";
     public static final String USER_USERNAME_ARGS_NOT_FOUND = "用户名称参数不存在或不合法";
