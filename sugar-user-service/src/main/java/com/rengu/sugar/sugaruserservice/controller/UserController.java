@@ -48,6 +48,12 @@ public class UserController {
         return userService.updateUserPasswordById(userId, password);
     }
 
+    // 根据Id修改角色
+    @PatchMapping(value = "/{userId}/role")
+    public UserEntity updateRoleById(@PathVariable(value = "userId") String userId, @RequestParam(value = "role") String roleId) {
+        return userService.updateUserRoleById(userId, roleId);
+    }
+
     // 删除用户
     @DeleteMapping(value = "/{userId}")
     public UserEntity deleteUserById(@PathVariable(value = "userId") String userId) {

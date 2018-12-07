@@ -150,6 +150,22 @@ public class UserService {
         return userRepository.save(userEntity);
     }
 
+    // 根据id修改角色信息
+    @CachePut(value = "User_Cache", key = "#userId")
+    public UserEntity updateUserRoleById(String userId, String roleId) {
+        if (StringUtils.isEmpty(roleId)) {
+            throw new RuntimeException(ApplicationMessage.ROLE_ID_NOT_FOUND);
+        }
+
+        RoleEntity roleEntity = roleService.getRoleById(roleId);
+        HashSet<RoleEntity> set = new HashSet<>();
+        set.add(roleEntity);
+
+        UserEntity userEntity = getUserById(userId);
+        userEntity.setRoleEntities(set);
+        return userRepository.save(userEntity);
+    }
+
     // 根据Id删除用户
     @CacheEvict(value = "User_Cache", key = "#userId")
     public UserEntity deleteUserById(String userId) {
