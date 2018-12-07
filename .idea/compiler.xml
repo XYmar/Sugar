@@ -6,6 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="sugar-api-gateway-server" />
         <module name="sugar-authorization-server" />
         <module name="sugar-config-server" />
         <module name="sugar-eureka-server" />
@@ -13,6 +14,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="sugar-api-gateway-server" target="1.8" />
       <module name="sugar-authorization-server" target="1.8" />
       <module name="sugar-config-server" target="1.8" />
       <module name="sugar-eureka-server" target="1.8" />
@@ -21,6 +23,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="sugar-api-gateway-server" options="-parameters" />
       <module name="sugar-authorization-server" options="-parameters" />
       <module name="sugar-config-server" options="-parameters" />
       <module name="sugar-eureka-server" options="-parameters" />
