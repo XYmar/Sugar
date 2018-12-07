@@ -54,7 +54,7 @@ public class ApplicationInit implements ApplicationRunner {
             UserEntity userEntity = new UserEntity();
             userEntity.setUsername(defaultAdminUsername);
             userEntity.setPassword(defaultAdminPassword);
-            userService.saveUser(userEntity, roleService.getRoleByName(defaultAdminRoleName), roleService.getRoleByName(defaultUserRoleName));
+            userService.saveUser(userEntity, roleService.findRoleByName(defaultAdminRoleName), roleService.findRoleByName(defaultUserRoleName));
         }
     }
 }
