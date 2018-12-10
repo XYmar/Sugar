@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/sugar-api-gateway-server/sugar-api-gateway-server.iml" filepath="$PROJECT_DIR$/sugar-api-gateway-server/sugar-api-gateway-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sugar-authorization-server/sugar-authorization-server.iml" filepath="$PROJECT_DIR$/sugar-authorization-server/sugar-authorization-server.iml" />
       <module fileurl="file://$PROJECT_DIR$/sugar-config-server/sugar-config-server.iml" filepath="$PROJECT_DIR$/sugar-config-server/sugar-config-server.iml" />
       <module fileurl="file://$PROJECT_DIR$/sugar-eureka-server/sugar-eureka-server.iml" filepath="$PROJECT_DIR$/sugar-eureka-server/sugar-eureka-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sugar-user-api/sugar-user-api.iml" filepath="$PROJECT_DIR$/sugar-user-api/sugar-user-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/sugar-user-service/sugar-user-service.iml" filepath="$PROJECT_DIR$/sugar-user-service/sugar-user-service.iml" />
     </modules>
   </component>
