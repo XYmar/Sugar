@@ -27,6 +27,7 @@ public class UserService {
     private final RoleService roleService;
     @Value("${config.defaultUserRoleName}")
     private String defaultUserRoleName;
+
     @Autowired
     public UserService(UserRepository userRepository, RoleService roleService) {
         this.userRepository = userRepository;
@@ -180,6 +181,15 @@ public class UserService {
             return false;
         }
         return userRepository.existsById(userId);
+    }
+
+    // 根据用户名查询用户信息
+    @Cacheable(value = "User_Cache", key = "#username")
+    public UserEntity getUserByUsername(String userName) {
+        if (!hasUserByUsername(userName)) {
+            throw new RuntimeException(ApplicationMessage.USER_USERNAME_NOT_FOUND + userName);
+        }
+        return userRepository.findByUsername(userName).get();
     }
 
     // 根据用户名查询用户是否存在

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/users")
+@RequestMapping(value = "/user")
 public class UserController {
 
     private final UserService userService;
@@ -34,6 +34,12 @@ public class UserController {
     @GetMapping(value = "/{userId}")
     public UserEntity getUserById(@PathVariable(value = "userId") String userId) {
         return userService.getUserById(userId);
+    }
+
+    // 根据用户名查询用户
+    @GetMapping(value = "/by-username")
+    public UserEntity getUserByUsername(@RequestParam(value = "username") String username) {
+        return userService.getUserByUsername(username);
     }
 
     // 根据角色id查询用户
@@ -64,5 +70,11 @@ public class UserController {
     @DeleteMapping(value = "/{userId}")
     public UserEntity deleteUserById(@PathVariable(value = "userId") String userId) {
         return userService.deleteUserById(userId);
+    }
+
+    // 根据用户名查看用户是否存在
+    @GetMapping(value = "/has-username")
+    public boolean hasUserByUsername(@RequestParam(value = "username") String username) {
+        return userService.hasUserByUsername(username);
     }
 }
