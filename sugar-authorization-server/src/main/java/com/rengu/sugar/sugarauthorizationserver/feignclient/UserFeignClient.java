@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(name = "sugar-user-service")
 public interface UserFeignClient {
 
-    @GetMapping(value = "/users/by-username")
+    @GetMapping(value = "/user/by-username")
     UserEntity getUserByUsername(@RequestParam(value = "username") String username);
 
-    @GetMapping(value = "/users/has-username")
+    @GetMapping(value = "/user/has-username")
     boolean hasUserByUsername(@RequestParam(value = "username") String username);
 }
