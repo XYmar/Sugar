@@ -20,7 +20,7 @@ public class UserController {
 
     // 添加用户
     @PostMapping
-    public UserEntity saveUser(UserEntity userEntity) {
+    public UserEntity saveUser(@RequestBody UserEntity userEntity) {
         return userService.saveUser(userEntity);
     }
 
