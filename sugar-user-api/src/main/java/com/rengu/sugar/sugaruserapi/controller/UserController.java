@@ -49,7 +49,7 @@ public class UserController {
     }
 
     // 删除用户
-    @DeleteMapping(value = "/user/{userId}")
+    @DeleteMapping(value = "/{userId}")
     @PreAuthorize(value = "hasRole('admin')")
     public ResultEntity deleteUserById(@PathVariable(value = "userId") String userId) {
         return ResultUtils.build(userService.deleteUserById(userId));
@@ -63,7 +63,7 @@ public class UserController {
     }
 
     // 根据Id修改角色
-    @PatchMapping(value = "/user/{userId}/role")
+    @PatchMapping(value = "/{userId}/role")
     @PreAuthorize(value = "hasRole('admin')")
     public ResultEntity updateRoleById(@PathVariable(value = "userId") String userId, @RequestParam(value = "roleId") String roleId) {
         return ResultUtils.build(userService.updateUserRoleById(userId, roleId));
