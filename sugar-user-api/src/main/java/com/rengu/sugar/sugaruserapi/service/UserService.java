@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Slf4j
 @Service
 public class UserService implements UserDetailsService {
@@ -24,8 +26,18 @@ public class UserService implements UserDetailsService {
         return null;
     }
 
-    // 调用用户服务，根据用户名查询用户
+    // 添加用户
     public UserEntity saveUser(UserEntity userEntity) {
         return userFeignClient.saveUser(userEntity);
     }
+
+    // 查询所有用户
+    public List<UserEntity> getUsers() {
+        return userFeignClient.getUsers();
+    }
+
+    // 根据id查询用户
+    /*public UserEntity getUserById(String userId) {
+        return userFeignClient.getUserById(userId);
+    }*/
 }

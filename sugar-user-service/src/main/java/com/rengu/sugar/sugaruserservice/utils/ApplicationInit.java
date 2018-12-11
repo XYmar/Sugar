@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -53,7 +54,7 @@ public class ApplicationInit implements ApplicationRunner {
         if (!userService.hasUserByUsername(defaultAdminUsername)) {
             UserEntity userEntity = new UserEntity();
             userEntity.setUsername(defaultAdminUsername);
-            userEntity.setPassword(defaultAdminPassword);
+            userEntity.setPassword(new BCryptPasswordEncoder().encode(defaultAdminPassword));
             userService.saveUser(userEntity, roleService.findRoleByName(defaultAdminRoleName), roleService.findRoleByName(defaultUserRoleName));
         }
     }

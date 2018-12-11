@@ -3,6 +3,7 @@ package com.rengu.sugar.sugaruserservice.controller;
 import com.rengu.sugar.sugaruserservice.entity.UserEntity;
 import com.rengu.sugar.sugaruserservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class UserController {
 
     // 查询所有用户
     @GetMapping
+    @PreAuthorize(value = "hasRole('admin')")
     public List<UserEntity> getUsers() {
         return userService.getAll();
     }
