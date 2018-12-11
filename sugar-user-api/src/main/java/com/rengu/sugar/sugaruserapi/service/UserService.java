@@ -37,7 +37,7 @@ public class UserService implements UserDetailsService {
     }
 
     // 根据id查询用户
-    /*public UserEntity getUserById(String userId) {
+    public UserEntity getUserById(String userId) {
         return userFeignClient.getUserById(userId);
-    }*/
+    }
 }

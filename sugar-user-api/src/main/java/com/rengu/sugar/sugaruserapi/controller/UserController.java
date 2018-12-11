@@ -4,10 +4,7 @@ import com.rengu.sugar.sugaruserapi.entity.UserEntity;
 import com.rengu.sugar.sugaruserapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -39,9 +36,9 @@ public class UserController {
     }
 
     // 根据id查询用户
-    /*@GetMapping
-    public UserEntity getUserById(String userId) {
+    @GetMapping(value = "/{userId}")
+    public UserEntity getUserById(@PathVariable(value = "userId") String userId) {
         return userService.getUserById(userId);
-    }*/
+    }
 
 }

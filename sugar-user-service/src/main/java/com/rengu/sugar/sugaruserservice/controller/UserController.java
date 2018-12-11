@@ -34,6 +34,7 @@ public class UserController {
 
     // 根据Id查询用户
     @GetMapping(value = "/{userId}")
+    @PreAuthorize(value = "hasRole('admin')")
     public UserEntity getUserById(@PathVariable(value = "userId") String userId) {
         return userService.getUserById(userId);
     }
@@ -52,24 +53,28 @@ public class UserController {
 
     // 根据Id修改用户
     @PatchMapping(value = "/{userId}")
+    @PreAuthorize(value = "hasRole('admin')")
     public UserEntity updateUserById(@PathVariable(value = "userId") String userId, UserEntity userEntity) {
         return userService.updateUserById(userId, userEntity);
     }
 
     // 根据Id修改密码
     @PatchMapping(value = "/{userId}/password")
+    @PreAuthorize(value = "hasRole('admin')")
     public UserEntity updatePasswordById(@PathVariable(value = "userId") String userId, @RequestParam(value = "password") String password) {
         return userService.updateUserPasswordById(userId, password);
     }
 
     // 根据Id修改角色
     @PatchMapping(value = "/{userId}/role")
+    @PreAuthorize(value = "hasRole('admin')")
     public UserEntity updateRoleById(@PathVariable(value = "userId") String userId, @RequestParam(value = "roleId") String roleId) {
         return userService.updateUserRoleById(userId, roleId);
     }
 
     // 删除用户
     @DeleteMapping(value = "/{userId}")
+    @PreAuthorize(value = "hasRole('admin')")
     public UserEntity deleteUserById(@PathVariable(value = "userId") String userId) {
         return userService.deleteUserById(userId);
     }
