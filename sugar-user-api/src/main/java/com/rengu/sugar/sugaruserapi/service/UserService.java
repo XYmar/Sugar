@@ -55,4 +55,9 @@ public class UserService implements UserDetailsService {
     public UserEntity updatePasswordById(String userId, String password) {
         return userFeignClient.updatePasswordById(userId, password);
     }
+
+    // 根据id修改角色
+    public UserEntity updateUserRoleById(String userId, String roleId) {
+        return userFeignClient.updateRoleById(userId, roleId);
+    }
 }

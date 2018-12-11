@@ -62,4 +62,11 @@ public class UserController {
         return ResultUtils.build(userService.updatePasswordById(userId, password));
     }
 
+    // 根据Id修改角色
+    @PatchMapping(value = "/{userId}/role")
+    @PreAuthorize(value = "hasRole('admin')")
+    public ResultEntity updateRoleById(@PathVariable(value = "userId") String userId, @RequestParam(value = "roleId") String roleId) {
+        return ResultUtils.build(userService.updateUserRoleById(userId, roleId));
+    }
+
 }
