@@ -29,6 +29,11 @@ public interface UserFeignClient {
     @PreAuthorize(value = "hasRole('admin')")
     UserEntity updateUserById(@PathVariable(value = "userId") String userId, UserEntity userEntity);
 
+    // 根据Id修改密码
+    @PatchMapping(value = "/user/{userId}/password")
+    @PreAuthorize(value = "hasRole('admin')")
+    UserEntity updatePasswordById(@PathVariable(value = "userId") String userId, @RequestParam(value = "password") String password);
+
     // 删除用户
     @DeleteMapping(value = "/{userId}")
     @PreAuthorize(value = "hasRole('admin')")

@@ -55,4 +55,11 @@ public class UserController {
         return userService.deleteUserById(userId);
     }
 
+    // 根据Id修改密码
+    @PatchMapping(value = "/{userId}/password")
+    @PreAuthorize(value = "hasRole('admin')")
+    public UserEntity updatePasswordById(@PathVariable(value = "userId") String userId, @RequestParam(value = "password") String password) {
+        return userService.updatePasswordById(userId, password);
+    }
+
 }
