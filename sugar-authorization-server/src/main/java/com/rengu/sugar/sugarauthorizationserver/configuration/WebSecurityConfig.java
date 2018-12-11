@@ -43,6 +43,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.cors();
+        // 放行option请求
+//        http.authorizeRequests().antMatchers(HttpMethod.OPTIONS).permitAll();
         // 放行监控接口
         http.authorizeRequests().antMatchers("/actuator/**").permitAll();
         http.authorizeRequests().anyRequest().authenticated();
