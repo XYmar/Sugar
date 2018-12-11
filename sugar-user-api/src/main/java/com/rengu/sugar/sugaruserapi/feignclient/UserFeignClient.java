@@ -1,5 +1,6 @@
 package com.rengu.sugar.sugaruserapi.feignclient;
 
+import com.rengu.sugar.sugaruserapi.entity.RoleEntity;
 import com.rengu.sugar.sugaruserapi.entity.UserEntity;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,6 +12,9 @@ import java.util.List;
 @Component
 @FeignClient(name = "sugar-user-service")
 public interface UserFeignClient {
+    /**
+     * 用户相关
+     */
     // 添加用户
     @PostMapping(value = "/user")
     UserEntity saveUser(UserEntity userEntity);
@@ -43,4 +47,29 @@ public interface UserFeignClient {
     @DeleteMapping(value = "/{userId}")
     @PreAuthorize(value = "hasRole('admin')")
     UserEntity deleteUserById(@PathVariable(value = "userId") String userId);
+
+
+    /**
+     * 角色相关
+     */
+
+    // 添加角色信息
+    @PostMapping(value = "/role")
+    RoleEntity saveRole(RoleEntity roleEntity);
+
+    // 查询所有角色
+    @GetMapping(value = "/role")
+    List<RoleEntity> getRoles();
+
+    // 根据id查询角色
+    @GetMapping(value = "/role/{roleId}")
+    RoleEntity getRoleById(@PathVariable(value = "roleId") String id);
+
+    // 根据id修改角色
+    @PatchMapping(value = "/role/{roleId}")
+    RoleEntity updateRoleById(@PathVariable(value = "roleId") String id, RoleEntity roleEntity);
+
+    // 根据id删除角色
+    @DeleteMapping(value = "/role/{roleId}")
+    RoleEntity deleteRoleById(@PathVariable(value = "roleId") String id);
 }

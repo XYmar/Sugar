@@ -1,7 +1,7 @@
 package com.rengu.sugar.sugaruserapi.service;
 
 import com.rengu.sugar.sugaruserapi.entity.RoleEntity;
-import com.rengu.sugar.sugaruserapi.feignclient.RoleFeignClient;
+import com.rengu.sugar.sugaruserapi.feignclient.UserFeignClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,36 +15,36 @@ import java.util.List;
 @Slf4j
 @Service
 public class RoleService {
-    @Autowired
-    private final RoleFeignClient roleFeignClient;
+    private final UserFeignClient userFeignClient;
 
-    public RoleService(RoleFeignClient roleFeignClient) {
-        this.roleFeignClient = roleFeignClient;
+    @Autowired
+    public RoleService(UserFeignClient userFeignClient) {
+        this.userFeignClient = userFeignClient;
     }
 
     // 保存角色角色
     public RoleEntity saveRole(RoleEntity roleEntity) {
-        return roleFeignClient.saveRole(roleEntity);
+        return userFeignClient.saveRole(roleEntity);
     }
 
     // 查询所有角色
     public List<RoleEntity> getAll() {
-        return roleFeignClient.getRoles();
+        return userFeignClient.getRoles();
     }
 
     // 根据Id查询角色信息
     public RoleEntity getRoleById(String roleId) {
-        return roleFeignClient.getRoleById(roleId);
+        return userFeignClient.getRoleById(roleId);
     }
 
     // 根据Id修改角色信息
     public RoleEntity updateRoleById(String roleId, RoleEntity roleEntityArgs) {
-        return roleFeignClient.updateRoleById(roleId, roleEntityArgs);
+        return userFeignClient.updateRoleById(roleId, roleEntityArgs);
     }
 
     // 根据id删除角色信息
     public RoleEntity deleteRoleById(String roleId) {
-        return roleFeignClient.deleteRoleById(roleId);
+        return userFeignClient.deleteRoleById(roleId);
     }
 
 }
