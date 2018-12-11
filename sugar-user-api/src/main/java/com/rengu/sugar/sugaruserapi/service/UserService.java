@@ -45,4 +45,9 @@ public class UserService implements UserDetailsService {
     public UserEntity updateUserById(String userId, UserEntity userEntity) {
         return userFeignClient.updateUserById(userId, userEntity);
     }
+
+    // 根据id删除用户
+    public UserEntity deleteUserById(String userId) {
+        return userFeignClient.deleteUserById(userId);
+    }
 }

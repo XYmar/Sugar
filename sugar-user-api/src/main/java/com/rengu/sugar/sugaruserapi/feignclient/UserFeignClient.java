@@ -4,10 +4,7 @@ import com.rengu.sugar.sugaruserapi.entity.UserEntity;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,4 +28,9 @@ public interface UserFeignClient {
     @PatchMapping(value = "/user/{userId}")
     @PreAuthorize(value = "hasRole('admin')")
     UserEntity updateUserById(@PathVariable(value = "userId") String userId, UserEntity userEntity);
+
+    // 删除用户
+    @DeleteMapping(value = "/{userId}")
+    @PreAuthorize(value = "hasRole('admin')")
+    UserEntity deleteUserById(@PathVariable(value = "userId") String userId);
 }
