@@ -41,4 +41,11 @@ public class UserController {
         return userService.getUserById(userId);
     }
 
+    // 根据id修改用户
+    @PatchMapping(value = "/{userId}")
+    @PreAuthorize(value = "hasRole('admin')")
+    public UserEntity updateUserById(@PathVariable(value = "userId") String userId, UserEntity userEntity) {
+        return userService.updateUserById(userId, userEntity);
+    }
+
 }

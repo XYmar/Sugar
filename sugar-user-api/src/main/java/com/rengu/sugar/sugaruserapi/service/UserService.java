@@ -40,4 +40,9 @@ public class UserService implements UserDetailsService {
     public UserEntity getUserById(String userId) {
         return userFeignClient.getUserById(userId);
     }
+
+    // 根据id修改用户
+    public UserEntity updateUserById(String userId, UserEntity userEntity) {
+        return userFeignClient.updateUserById(userId, userEntity);
+    }
 }
