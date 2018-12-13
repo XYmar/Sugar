@@ -27,7 +27,7 @@ public interface UserFeignClient {
     UserEntity getUserById(@PathVariable(value = "userId") String userId);
 
     // 根据id修改用户
-    @PatchMapping(value = "/user/{userId}")
+    @PutMapping(value = "/user/{userId}")
     UserEntity updateUserById(@PathVariable(value = "userId") String userId, UserEntity userEntity);
 
     // 根据Id修改密码
