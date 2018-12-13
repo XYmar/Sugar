@@ -46,7 +46,7 @@ public class RoleController {
     }
 
     // 根据id修改角色
-    @PatchMapping(value = "/{roleId}")
+    @PutMapping(value = "/{roleId}")
     @PreAuthorize(value = "hasRole('admin')")
     public RoleEntity updateRoleById(@PathVariable(value = "roleId") String id, RoleEntity roleEntity) {
         return roleService.updateRoleById(id, roleEntity);

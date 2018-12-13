@@ -60,7 +60,7 @@ public interface UserFeignClient {
     RoleEntity getRoleById(@PathVariable(value = "roleId") String id);
 
     // 根据id修改角色
-    @PatchMapping(value = "/role/{roleId}")
+    @PutMapping(value = "/role/{roleId}")
     RoleEntity updateRoleById(@PathVariable(value = "roleId") String id, RoleEntity roleEntity);
 
     // 根据id删除角色

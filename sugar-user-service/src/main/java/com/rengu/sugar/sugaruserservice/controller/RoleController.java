@@ -38,8 +38,8 @@ public class RoleController {
     }
 
     // 根据id修改角色
-    @PatchMapping(value = "/{roleId}")
-    public RoleEntity updateRoleById(@PathVariable(value = "roleId") String id, RoleEntity roleEntity) {
+    @PutMapping(value = "/{roleId}")
+    public RoleEntity updateRoleById(@PathVariable(value = "roleId") String id, @RequestBody RoleEntity roleEntity) {
         return roleService.updateRoleById(id, roleEntity);
     }
 
