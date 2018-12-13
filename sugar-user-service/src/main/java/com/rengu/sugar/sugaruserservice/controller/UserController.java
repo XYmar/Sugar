@@ -52,21 +52,21 @@ public class UserController {
     }
 
     // 根据Id修改用户
-    @PatchMapping(value = "/{userId}")
+    @PutMapping(value = "/{userId}")
     @PreAuthorize(value = "hasRole('admin')")
-    public UserEntity updateUserById(@PathVariable(value = "userId") String userId, UserEntity userEntity) {
+    public UserEntity updateUserById(@PathVariable(value = "userId") String userId, @RequestBody UserEntity userEntity) {
         return userService.updateUserById(userId, userEntity);
     }
 
     // 根据Id修改密码
-    @PatchMapping(value = "/{userId}/password")
+    @PutMapping(value = "/{userId}/password")
     @PreAuthorize(value = "hasRole('admin')")
     public UserEntity updatePasswordById(@PathVariable(value = "userId") String userId, @RequestParam(value = "password") String password) {
         return userService.updateUserPasswordById(userId, password);
     }
 
     // 根据Id修改角色
-    @PatchMapping(value = "/{userId}/role")
+    @PutMapping(value = "/{userId}/role")
     @PreAuthorize(value = "hasRole('admin')")
     public UserEntity updateRoleById(@PathVariable(value = "userId") String userId, @RequestParam(value = "roleId") String roleId) {
         return userService.updateUserRoleById(userId, roleId);

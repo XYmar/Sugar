@@ -1,12 +1,12 @@
 package com.rengu.sugar.sugaruserapi.controller;
 
+import com.rengu.sugar.sugaruserapi.Utils.ResultUtils;
+import com.rengu.sugar.sugaruserapi.entity.ResultEntity;
 import com.rengu.sugar.sugaruserapi.entity.UserEntity;
 import com.rengu.sugar.sugaruserapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * Author: XYmar
@@ -24,28 +24,49 @@ public class UserController {
 
     // 添加用户
     @PostMapping
-    public UserEntity saveUser(UserEntity userEntity) {
-        return userService.saveUser(userEntity);
+    public ResultEntity saveUser(UserEntity userEntity) {
+        return ResultUtils.build(userService.saveUser(userEntity));
     }
 
     // 查询所有用户
     @GetMapping
     @PreAuthorize(value = "hasRole('admin')")
-    public List<UserEntity> getUsers() {
-        return userService.getUsers();
+    public ResultEntity getUsers() {
+        return ResultUtils.build(userService.getUsers());
     }
 
     // 根据id查询用户
     @GetMapping(value = "/{userId}")
-    public UserEntity getUserById(@PathVariable(value = "userId") String userId) {
-        return userService.getUserById(userId);
+    public ResultEntity getUserById(@PathVariable(value = "userId") String userId) {
+        return ResultUtils.build(userService.getUserById(userId));
     }
 
     // 根据id修改用户
-    @PatchMapping(value = "/{userId}")
+    @PutMapping(value = "/{userId}")
     @PreAuthorize(value = "hasRole('admin')")
-    public UserEntity updateUserById(@PathVariable(value = "userId") String userId, UserEntity userEntity) {
-        return userService.updateUserById(userId, userEntity);
+    public ResultEntity updateUserById(@PathVariable(value = "userId") String userId, UserEntity userEntity) {
+        return ResultUtils.build(userService.updateUserById(userId, userEntity));
+    }
+
+    // 删除用户
+    @DeleteMapping(value = "/{userId}")
+    @PreAuthorize(value = "hasRole('admin')")
+    public ResultEntity deleteUserById(@PathVariable(value = "userId") String userId) {
+        return ResultUtils.build(userService.deleteUserById(userId));
+    }
+
+    // 根据Id修改密码
+    @PutMapping(value = "/{userId}/password")
+    @PreAuthorize(value = "hasRole('admin')")
+    public ResultEntity updatePasswordById(@PathVariable(value = "userId") String userId, @RequestParam(value = "password") String password) {
+        return ResultUtils.build(userService.updatePasswordById(userId, password));
+    }
+
+    // 根据Id修改角色
+    @PutMapping(value = "/{userId}/role")
+    @PreAuthorize(value = "hasRole('admin')")
+    public ResultEntity updateRoleById(@PathVariable(value = "userId") String userId, @RequestParam(value = "roleId") String roleId) {
+        return ResultUtils.build(userService.updateUserRoleById(userId, roleId));
     }
 
 }

@@ -45,4 +45,19 @@ public class UserService implements UserDetailsService {
     public UserEntity updateUserById(String userId, UserEntity userEntity) {
         return userFeignClient.updateUserById(userId, userEntity);
     }
+
+    // 根据id删除用户
+    public UserEntity deleteUserById(String userId) {
+        return userFeignClient.deleteUserById(userId);
+    }
+
+    // 根据Id修改密码
+    public UserEntity updatePasswordById(String userId, String password) {
+        return userFeignClient.updatePasswordById(userId, password);
+    }
+
+    // 根据id修改角色
+    public UserEntity updateUserRoleById(String userId, String roleId) {
+        return userFeignClient.updateRoleById(userId, roleId);
+    }
 }
