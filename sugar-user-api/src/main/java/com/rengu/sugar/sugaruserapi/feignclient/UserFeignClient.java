@@ -31,11 +31,11 @@ public interface UserFeignClient {
     UserEntity updateUserById(@PathVariable(value = "userId") String userId, UserEntity userEntity);
 
     // 根据Id修改密码
-    @PatchMapping(value = "/user/{userId}/password")
+    @PutMapping(value = "/user/{userId}/password")
     UserEntity updatePasswordById(@PathVariable(value = "userId") String userId, @RequestParam(value = "password") String password);
 
     // 根据Id修改角色
-    @PatchMapping(value = "/user/{userId}/role")
+    @PutMapping(value = "/user/{userId}/role")
     UserEntity updateRoleById(@PathVariable(value = "userId") String userId, @RequestParam(value = "roleId") String roleId);
 
     // 删除用户
