@@ -3,6 +3,7 @@ package com.rengu.sugar.sugaruserservice.controller;
 import com.rengu.sugar.sugaruserservice.entity.RoleEntity;
 import com.rengu.sugar.sugaruserservice.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +20,8 @@ public class RoleController {
 
     // 添加角色信息
     @PostMapping
-    public RoleEntity saveRole(RoleEntity roleEntity) {
+    @PreAuthorize(value = "hasRole('admin')")
+    public RoleEntity saveRole(@RequestBody RoleEntity roleEntity) {
         return roleService.saveRole(roleEntity);
     }
 

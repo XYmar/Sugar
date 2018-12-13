@@ -1,5 +1,7 @@
 package com.rengu.sugar.sugaruserapi.controller;
 
+import com.rengu.sugar.sugaruserapi.Utils.ResultUtils;
+import com.rengu.sugar.sugaruserapi.entity.ResultEntity;
 import com.rengu.sugar.sugaruserapi.entity.RoleEntity;
 import com.rengu.sugar.sugaruserapi.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +17,9 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/role")
 public class RoleController {
-    @Autowired
     private final RoleService roleService;
 
+    @Autowired
     public RoleController(RoleService roleService) {
         this.roleService = roleService;
     }
@@ -25,8 +27,8 @@ public class RoleController {
     // 添加角色信息
     @PostMapping
     @PreAuthorize(value = "hasRole('admin')")
-    public RoleEntity saveRole(RoleEntity roleEntity) {
-        return roleService.saveRole(roleEntity);
+    public ResultEntity saveRole(RoleEntity roleEntity) {
+        return ResultUtils.build(roleService.saveRole(roleEntity));
     }
 
     // 查询所有角色
