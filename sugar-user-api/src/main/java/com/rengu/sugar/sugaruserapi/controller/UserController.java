@@ -57,7 +57,6 @@ public class UserController {
 
     // 根据Id修改密码
     @PutMapping(value = "/{userId}/password")
-    @PreAuthorize(value = "hasRole('admin')")
     public ResultEntity updatePasswordById(@PathVariable(value = "userId") String userId, @RequestParam(value = "password") String password) {
         return ResultUtils.build(userService.updatePasswordById(userId, password));
     }
