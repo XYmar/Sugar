@@ -16,6 +16,7 @@ public class UserEntity implements Serializable, UserDetails {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime = new Date();
     private String username;
+    private String realname;
     private String password;
     private String telephoneNum;
     private String email;

@@ -13,6 +13,7 @@ public class ApplicationMessage {
     public static final String USER_USERNAME_NOT_FOUND = "未发现该用户名称：";
     public static final String USER_USERNAME_EXISTED = "该用户名称已存在：";
 
+    public static final String USER_REALNAME_ARGS_NOT_FOUND = "姓名参数不存在或不合法";
     public static final String USER_PASSWORD_ARGS_NOT_FOUND = "用户密码参数不存在或不合法。";
     public static final String USER_PASSWORD_NOT_FOUND = "未发现该用户密码：";
     public static final String USER_TELEPHONENUM_ARGS_NOT_FOUND = "用户联系方式不存在或不合法。";

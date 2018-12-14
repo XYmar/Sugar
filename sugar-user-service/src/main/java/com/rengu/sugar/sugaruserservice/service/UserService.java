@@ -56,6 +56,10 @@ public class UserService {
             throw new RuntimeException(ApplicationMessage.USER_USERNAME_ARGS_NOT_FOUND);
         }
 
+        /*if (StringUtils.isEmpty(userEntity.getRealname())) {
+            throw new RuntimeException(ApplicationMessage.USER_REALNAME_ARGS_NOT_FOUND);
+        }*/
+
         if (StringUtils.isEmpty(userEntity.getPassword())) {
             throw new RuntimeException(ApplicationMessage.USER_PASSWORD_ARGS_NOT_FOUND);
         }
@@ -121,6 +125,11 @@ public class UserService {
             }
             userEntity.setUsername(userEntityArgs.getUsername());
         }
+
+        if (!StringUtils.isEmpty(userEntityArgs.getRealname()) && !userEntity.getRealname().equals(userEntityArgs.getRealname())) {
+            userEntity.setUsername(userEntityArgs.getRealname());
+        }
+
         if (!StringUtils.isEmpty(userEntityArgs.getTelephoneNum()) && !userEntity.getTelephoneNum().equals(userEntityArgs.getTelephoneNum())) {
             if (hasUserByTelephoneNum(userEntityArgs.getTelephoneNum())) {
                 throw new RuntimeException(ApplicationMessage.USER_TELEPHONENUM_EXISTED);
