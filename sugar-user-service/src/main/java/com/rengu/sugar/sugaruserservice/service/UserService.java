@@ -126,8 +126,8 @@ public class UserService {
             userEntity.setUsername(userEntityArgs.getUsername());
         }
 
-        if (!StringUtils.isEmpty(userEntityArgs.getRealname()) && !userEntity.getRealname().equals(userEntityArgs.getRealname())) {
-            userEntity.setUsername(userEntityArgs.getRealname());
+        if (!StringUtils.isEmpty(userEntityArgs.getRealname()) && (userEntity.getRealname() == null || !userEntity.getRealname().equals(userEntityArgs.getRealname()))) {
+            userEntity.setRealname(userEntityArgs.getRealname());
         }
 
         if (!StringUtils.isEmpty(userEntityArgs.getTelephoneNum()) && !userEntity.getTelephoneNum().equals(userEntityArgs.getTelephoneNum())) {

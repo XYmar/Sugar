@@ -53,7 +53,6 @@ public class UserController {
 
     // 根据Id修改用户
     @PutMapping(value = "/{userId}")
-    @PreAuthorize(value = "hasRole('admin')")
     public UserEntity updateUserById(@PathVariable(value = "userId") String userId, @RequestBody UserEntity userEntity) {
         return userService.updateUserById(userId, userEntity);
     }
