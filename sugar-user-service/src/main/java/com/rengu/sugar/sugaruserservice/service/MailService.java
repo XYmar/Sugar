@@ -64,7 +64,7 @@ public class MailService {
 
     public boolean sendRegisterMail(String id, String email) {
         MimeMessage message = mailSender.createMimeMessage();
-        String register_link = "http://localhost:8080/user/id=" + id + "/active";
+        String register_link = "http://localhost:8080/SUGAR-USER-API/user/id=" + id + "/active";
 //创建邮件正文
         Context context = new Context();
         context.setVariable("register_link", register_link);

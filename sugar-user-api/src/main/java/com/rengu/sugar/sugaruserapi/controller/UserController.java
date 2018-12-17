@@ -73,4 +73,10 @@ public class UserController {
         return ResultUtils.build(userService.updateUserRoleById(userId, roleId));
     }
 
+    // 根据Id激活用户
+    @PutMapping(value = "/{userId}/active")
+    public void updateEmailStateById(@PathVariable(value = "userId") String userId) {
+        userService.updateEmailStateById(userId);
+    }
+
 }

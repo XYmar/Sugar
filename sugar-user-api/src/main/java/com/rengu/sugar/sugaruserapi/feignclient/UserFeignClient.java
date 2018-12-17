@@ -45,6 +45,10 @@ public interface UserFeignClient {
     @DeleteMapping(value = "/user/{userId}")
     UserEntity deleteUserById(@PathVariable(value = "userId") String userId);
 
+    // 根据Id激活用户
+    @PutMapping(value = "/{userId}/active")
+    void updateEmailStateById(@PathVariable(value = "userId") String userId);
+
 
     /**
      * 角色相关

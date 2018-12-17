@@ -227,6 +227,14 @@ public class UserService {
         return userRepository.save(userEntity);
     }
 
+    // 根据id激活用户
+    @CachePut(value = "User_Cache", key = "#userId")
+    public void updateEmailStateById(String userId) {
+        UserEntity userEntity = getUserById(userId);
+        userEntity.setMailState(1);
+        userRepository.save(userEntity);
+    }
+
     // 根据Id删除用户
     @CacheEvict(value = "User_Cache", key = "#userId")
     public UserEntity deleteUserById(String userId) {

@@ -65,4 +65,8 @@ public class UserService implements UserDetailsService {
     public UserEntity updateUserRoleById(String userId, String roleId) {
         return userFeignClient.updateRoleById(userId, roleId);
     }
+
+    public void updateEmailStateById(String userId) {
+        userFeignClient.updateEmailStateById(userId);
+    }
 }

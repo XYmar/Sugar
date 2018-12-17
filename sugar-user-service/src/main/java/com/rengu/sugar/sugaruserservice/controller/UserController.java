@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.mail.MessagingException;
 import java.util.List;
 
 @RestController
@@ -22,7 +21,7 @@ public class UserController {
 
     // 添加用户
     @PostMapping
-    public void saveUser(@RequestBody UserEntity userEntity) throws MessagingException {
+    public void saveUser(@RequestBody UserEntity userEntity) {
         userService.saveUser(userEntity);
     }
 
@@ -70,6 +69,13 @@ public class UserController {
     public UserEntity updateRoleById(@PathVariable(value = "userId") String userId, @RequestParam(value = "roleId") String roleId) {
         return userService.updateUserRoleById(userId, roleId);
     }
+
+    // 根据Id激活用户
+    @PutMapping(value = "/{userId}/active")
+    public void updateEmailStateById(@PathVariable(value = "userId") String userId) {
+        userService.updateEmailStateById(userId);
+    }
+
 
     // 删除用户
     @DeleteMapping(value = "/{userId}")
