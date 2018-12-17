@@ -19,7 +19,7 @@ public interface UserFeignClient {
 
     // 添加用户
     @PostMapping(value = "/user")
-    UserEntity saveUser(UserEntity userEntity);
+    void saveUser(UserEntity userEntity);
 
     // 查询所有用户
     @GetMapping(value = "/user")

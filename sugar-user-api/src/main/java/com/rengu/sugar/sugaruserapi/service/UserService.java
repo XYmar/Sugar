@@ -32,8 +32,8 @@ public class UserService implements UserDetailsService {
     }
 
     // 添加用户
-    public UserEntity saveUser(UserEntity userEntity) {
-        return userFeignClient.saveUser(userEntity);
+    public void saveUser(UserEntity userEntity) {
+        userFeignClient.saveUser(userEntity);
     }
 
     // 查询所有用户

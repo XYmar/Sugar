@@ -30,8 +30,8 @@ public class UserController {
 
     // 添加用户
     @PostMapping
-    public ResultEntity saveUser(UserEntity userEntity) {
-        return ResultUtils.build(userService.saveUser(userEntity));
+    public void saveUser(UserEntity userEntity) {
+        userService.saveUser(userEntity);
     }
 
     // 查询所有用户

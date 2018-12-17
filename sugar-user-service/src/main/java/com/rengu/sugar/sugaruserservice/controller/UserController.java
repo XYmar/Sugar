@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import java.util.List;
 
 @RestController
@@ -21,8 +22,8 @@ public class UserController {
 
     // 添加用户
     @PostMapping
-    public UserEntity saveUser(@RequestBody UserEntity userEntity) {
-        return userService.saveUser(userEntity);
+    public void saveUser(@RequestBody UserEntity userEntity) throws MessagingException {
+        userService.saveUser(userEntity);
     }
 
     // 查询所有用户

@@ -13,7 +13,10 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
+import javax.mail.MessagingException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -28,10 +31,15 @@ public class UserService {
     @Value("${config.defaultUserRoleName}")
     private String defaultUserRoleName;
 
+    private final MailService mailService;
+    private final TemplateEngine templateEngine;
+
     @Autowired
-    public UserService(UserRepository userRepository, RoleService roleService) {
+    public UserService(UserRepository userRepository, RoleService roleService, MailService mailService, TemplateEngine templateEngine) {
         this.userRepository = userRepository;
         this.roleService = roleService;
+        this.mailService = mailService;
+        this.templateEngine = templateEngine;
     }
 
     // 保存管理员用户
@@ -46,7 +54,49 @@ public class UserService {
         return userRepository.save(userEntity);
     }
 
-    // 保存用户
+    // 注册用户（邮箱，用户名，密码）
+    @CachePut(value = "User_Cache", key = "#userEntity.getId()")
+    public void saveUser(UserEntity userEntity) throws MessagingException {
+        if (userEntity == null) {
+            throw new RuntimeException(ApplicationMessage.USER_ARGS_NOT_FOUND);
+        }
+        if (StringUtils.isEmpty(userEntity.getUsername())) {
+            throw new RuntimeException(ApplicationMessage.USER_USERNAME_ARGS_NOT_FOUND);
+        }
+
+        if (StringUtils.isEmpty(userEntity.getPassword())) {
+            throw new RuntimeException(ApplicationMessage.USER_PASSWORD_ARGS_NOT_FOUND);
+        }
+        userEntity.setPassword(new BCryptPasswordEncoder().encode(userEntity.getPassword()));
+
+        userEntity.setMailState(0);
+
+        if (StringUtils.isEmpty(userEntity.getEmail())) {
+            throw new RuntimeException(ApplicationMessage.USER_EMAIL_ARGS_NOT_FOUND);
+        }
+
+        RoleEntity role = roleService.findRoleByName(defaultUserRoleName);
+        HashSet<RoleEntity> set = new HashSet<>();
+        set.add(role);
+        userEntity.setRoleEntities(set);
+
+        //去重
+        if (hasUserByUsername(userEntity.getUsername())) {
+            throw new RuntimeException(ApplicationMessage.USER_USERNAME_EXISTED + userEntity.getUsername());
+        }
+
+        if (hasUserByEmail(userEntity.getEmail())) {
+            throw new RuntimeException(ApplicationMessage.USER_EMAIL_EXISTED);
+        }
+
+        // 保存用户信息
+        userRepository.save(userEntity);
+
+        // 发送邮件
+        sendTemplateMail();
+    }
+
+    /*// 保存用户
     @CachePut(value = "User_Cache", key = "#userEntity.getId()")
     public UserEntity saveUser(UserEntity userEntity) {
         if (userEntity == null) {
@@ -56,9 +106,9 @@ public class UserService {
             throw new RuntimeException(ApplicationMessage.USER_USERNAME_ARGS_NOT_FOUND);
         }
 
-        /*if (StringUtils.isEmpty(userEntity.getRealname())) {
+        *//*if (StringUtils.isEmpty(userEntity.getRealname())) {
             throw new RuntimeException(ApplicationMessage.USER_REALNAME_ARGS_NOT_FOUND);
-        }*/
+        }*//*
 
         if (StringUtils.isEmpty(userEntity.getPassword())) {
             throw new RuntimeException(ApplicationMessage.USER_PASSWORD_ARGS_NOT_FOUND);
@@ -92,7 +142,7 @@ public class UserService {
         }
 
         return userRepository.save(userEntity);
-    }
+    }*/
 
     // 查询所有用户
     public List<UserEntity> getAll() {
@@ -228,5 +278,13 @@ public class UserService {
     public List<UserEntity> getUserByRoleId(String roleId) {
         RoleEntity roleEntity = roleService.getRoleById(roleId);
         return userRepository.findByRoleEntities(roleEntity);
+    }
+
+    public void sendTemplateMail() {
+        //创建邮件正文
+        Context context = new Context();
+        context.setVariable("id", "1");
+        String emailContent = templateEngine.process("emailTemplate", context);
+        mailService.sendHtmlMail("xqingliuwu@163.com", "仁谷管理系统激活邮件", emailContent);
     }
 }
