@@ -24,6 +24,7 @@ public class UserEntity {
     private String password;
     private String telephoneNum;
     private String email;
+    private int mailState;
     private boolean accountNonExpired = true;
     private boolean accountNonLocked = true;
     private boolean credentialsNonExpired = true;
