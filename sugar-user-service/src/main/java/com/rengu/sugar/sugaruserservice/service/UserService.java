@@ -14,9 +14,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
 
-import javax.mail.MessagingException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -56,7 +54,7 @@ public class UserService {
 
     // 注册用户（邮箱，用户名，密码）
     @CachePut(value = "User_Cache", key = "#userEntity.getId()")
-    public void saveUser(UserEntity userEntity) throws MessagingException {
+    public void saveUser(UserEntity userEntity) {
         if (userEntity == null) {
             throw new RuntimeException(ApplicationMessage.USER_ARGS_NOT_FOUND);
         }
@@ -92,8 +90,11 @@ public class UserService {
         // 保存用户信息
         userRepository.save(userEntity);
 
+        String id = userEntity.getId();
+        String email = userEntity.getEmail();
+
         // 发送邮件
-        sendTemplateMail();
+        mailService.sendRegisterMail(id, email);
     }
 
     /*// 保存用户
@@ -280,11 +281,4 @@ public class UserService {
         return userRepository.findByRoleEntities(roleEntity);
     }
 
-    public void sendTemplateMail() {
-        //创建邮件正文
-        Context context = new Context();
-        context.setVariable("id", "1");
-        String emailContent = templateEngine.process("emailTemplate", context);
-        mailService.sendHtmlMail("xqingliuwu@163.com", "仁谷管理系统激活邮件", emailContent);
-    }
 }

@@ -8,6 +8,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -22,10 +24,12 @@ public class MailService {
     private final JavaMailSender mailSender;
     @Value("${mail.fromMail.addr}")
     private String from;
+    private final TemplateEngine templateEngine;
 
     @Autowired
-    public MailService(JavaMailSender mailSender) {
+    public MailService(JavaMailSender mailSender, TemplateEngine templateEngine) {
         this.mailSender = mailSender;
+        this.templateEngine = templateEngine;
     }
 
     public void sendSimpleMail(String to, String subject, String content) {
@@ -55,6 +59,29 @@ public class MailService {
             logger.info("html邮件发送成功");
         } catch (MessagingException e) {
             logger.error("发送html邮件时发生异常！", e);
+        }
+    }
+
+    public boolean sendRegisterMail(String id, String email) {
+        MimeMessage message = mailSender.createMimeMessage();
+        String register_link = "http://localhost:8080/user/id=" + id + "/active";
+//创建邮件正文
+        Context context = new Context();
+        context.setVariable("register_link", register_link);
+        String emailContent = templateEngine.process("UserRegister", context);
+        try {
+//true表示需要创建一个multipart message
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setFrom(from);
+            helper.setTo(email);
+            helper.setSubject("仁谷管理系统激活邮件");
+            helper.setText(emailContent, true);
+            mailSender.send(message);
+            logger.info("html邮件发送成功");
+            return true;
+        } catch (MessagingException e) {
+            logger.error("发送html邮件时发生异常！", e);
+            return false;
         }
     }
 }
