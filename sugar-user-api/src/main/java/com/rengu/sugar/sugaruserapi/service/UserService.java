@@ -26,6 +26,11 @@ public class UserService implements UserDetailsService {
         return null;
     }
 
+    // 判断邮箱是否已被注册
+    public boolean hasUserByEmail(String email) {
+        return userFeignClient.hasUserByEmail(email);
+    }
+
     // 添加用户
     public UserEntity saveUser(UserEntity userEntity) {
         return userFeignClient.saveUser(userEntity);

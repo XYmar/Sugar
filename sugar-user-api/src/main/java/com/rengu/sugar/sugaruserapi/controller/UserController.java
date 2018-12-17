@@ -22,6 +22,12 @@ public class UserController {
         this.userService = userService;
     }
 
+    // 判断邮箱是否已被注册
+    @GetMapping(value = "/has-email")
+    public boolean hasUserByEmail(@RequestParam(value = "email") String email) {
+        return userService.hasUserByEmail(email);
+    }
+
     // 添加用户
     @PostMapping
     public ResultEntity saveUser(UserEntity userEntity) {

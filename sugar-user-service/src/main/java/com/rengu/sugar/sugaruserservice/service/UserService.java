@@ -219,8 +219,8 @@ public class UserService {
 
     // 根据邮箱查询用户是否存在
     public boolean hasUserByEmail(String email) {
-        if (StringUtils.isEmpty(email)) {
-            return false;
+        if (StringUtils.isEmpty(email) && !email.matches("^\\w+@(\\w+\\.)+\\w+$")) {
+            throw new RuntimeException(ApplicationMessage.USER_EMAIL_ARGS_NOT_FOUND);
         }
         return userRepository.findByEmail(email).isPresent();
     }

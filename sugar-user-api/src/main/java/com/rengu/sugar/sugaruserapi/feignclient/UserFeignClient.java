@@ -14,6 +14,9 @@ public interface UserFeignClient {
     /**
      * 用户相关
      */
+    @GetMapping(value = "/user/has-email")
+    boolean hasUserByEmail(@RequestParam(value = "email") String email);
+
     // 添加用户
     @PostMapping(value = "/user")
     UserEntity saveUser(UserEntity userEntity);

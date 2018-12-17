@@ -82,4 +82,10 @@ public class UserController {
     public boolean hasUserByUsername(@RequestParam(value = "username") String username) {
         return userService.hasUserByUsername(username);
     }
+
+    // 查看邮箱是否已被注册；根据邮箱查看用户是否存在
+    @GetMapping(value = "/has-email")
+    public boolean hasUserByEmail(@RequestParam(value = "email") String email) {
+        return userService.hasUserByEmail(email);
+    }
 }
