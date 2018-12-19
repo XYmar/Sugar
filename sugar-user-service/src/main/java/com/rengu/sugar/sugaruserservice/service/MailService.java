@@ -1,5 +1,6 @@
 package com.rengu.sugar.sugaruserservice.service;
 
+import com.rengu.sugar.sugaruserservice.utils.ApplicationMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -62,13 +64,15 @@ public class MailService {
         }
     }
 
-    public boolean sendRegisterMail(String id, String email) {
+    @Async
+    public void sendRegisterMail(String id, String email, String activeCode) {
         MimeMessage message = mailSender.createMimeMessage();
-        String register_link = "http://localhost:8080/SUGAR-USER-API/user/id=" + id + "/active";
+        String register_link = "http://192.168.31.134:8080/SUGAR-USER-API/user/" + id + "/active";
 //创建邮件正文
         Context context = new Context();
-        context.setVariable("register_link", register_link);
-        String emailContent = templateEngine.process("UserRegister", context);
+        //context.setVariable("register_link", register_link);
+        context.setVariable("activeCode", activeCode);
+        String emailContent = templateEngine.process("UserCodeRegister", context);
         try {
 //true表示需要创建一个multipart message
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -78,10 +82,8 @@ public class MailService {
             helper.setText(emailContent, true);
             mailSender.send(message);
             logger.info("html邮件发送成功");
-            return true;
         } catch (MessagingException e) {
-            logger.error("发送html邮件时发生异常！", e);
-            return false;
+            throw new RuntimeException(ApplicationMessage.MAIL_SEND_ERROR);
         }
     }
 }

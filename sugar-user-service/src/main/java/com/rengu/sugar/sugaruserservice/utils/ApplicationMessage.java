@@ -27,4 +27,8 @@ public class ApplicationMessage {
     public static final String USER_ID_NOT_FOUND = "未发现该用户id：";
     public static final String USER_ID_EXISTED = "该用户id已存在：";
 
+    public static final String MAIL_SEND_ERROR = "邮件发送失败";
+    public static final String USER_EMAIL_NOT_ACTIVE = "未激活，请前往邮箱激活";
+    public static final String USER_CODE_ARGS_NOT_FOUND = "请输入验证码";
+
 }

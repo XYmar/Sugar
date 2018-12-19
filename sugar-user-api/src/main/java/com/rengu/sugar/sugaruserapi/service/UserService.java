@@ -69,4 +69,8 @@ public class UserService implements UserDetailsService {
     public void updateEmailStateById(String userId) {
         userFeignClient.updateEmailStateById(userId);
     }
+
+    public boolean getUserByEmailAndCode(String email, String activeCode) {
+        return userFeignClient.getUserByEmailAndCode(email, activeCode);
+    }
 }

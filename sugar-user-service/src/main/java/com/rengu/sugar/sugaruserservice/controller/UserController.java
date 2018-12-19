@@ -51,6 +51,12 @@ public class UserController {
         return userService.getUserByRoleId(roleId);
     }
 
+    // 根据角色id及验证码查询用户
+    @GetMapping(value = "/activeCode/{activeCode}")
+    public boolean getUserByIdAndCode(@RequestParam(value = "email") String email, @PathVariable(value = "activeCode") String activeCode) {
+        return userService.getUserByEmailAndCode(email, activeCode);
+    }
+
     // 根据Id修改用户
     @PutMapping(value = "/{userId}")
     public UserEntity updateUserById(@PathVariable(value = "userId") String userId, @RequestBody UserEntity userEntity) {

@@ -19,7 +19,8 @@ public class UserEntity implements Serializable {
     private String password;
     private String telephoneNum;
     private String email;
-    private int mailState;
+    private String activeCode;
+    private boolean mailState = false;
     private boolean accountNonExpired = true;
     private boolean accountNonLocked = true;
     private boolean credentialsNonExpired = true;

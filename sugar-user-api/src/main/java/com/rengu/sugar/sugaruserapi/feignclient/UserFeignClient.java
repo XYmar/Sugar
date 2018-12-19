@@ -46,8 +46,12 @@ public interface UserFeignClient {
     UserEntity deleteUserById(@PathVariable(value = "userId") String userId);
 
     // 根据Id激活用户
-    @PutMapping(value = "/{userId}/active")
+    @PutMapping(value = "/user/{userId}/active")
     void updateEmailStateById(@PathVariable(value = "userId") String userId);
+
+    // 根据邮箱及验证码查询用户
+    @GetMapping(value = "/user/activeCode/{activeCode}")
+    boolean getUserByEmailAndCode(@RequestParam(value = "email") String email, @PathVariable(value = "activeCode") String activeCode);
 
 
     /**
@@ -73,4 +77,5 @@ public interface UserFeignClient {
     // 根据id删除角色
     @DeleteMapping(value = "/role/{roleId}")
     RoleEntity deleteRoleById(@PathVariable(value = "roleId") String id);
+
 }

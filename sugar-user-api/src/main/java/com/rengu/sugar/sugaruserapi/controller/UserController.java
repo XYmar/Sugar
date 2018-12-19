@@ -47,6 +47,12 @@ public class UserController {
         return ResultUtils.build(userService.getUserById(userId));
     }
 
+    // 根据角色id及验证码查询用户
+    @GetMapping(value = "/activeCode/{activeCode}")
+    public boolean getUserByEmailAndCode(@RequestParam(value = "email") String email, @PathVariable(value = "activeCode") String activeCode) {
+        return userService.getUserByEmailAndCode(email, activeCode);
+    }
+
     // 根据id修改用户
     @PutMapping(value = "/{userId}")
     public ResultEntity updateUserById(@PathVariable(value = "userId") String userId, UserEntity userEntity) {
