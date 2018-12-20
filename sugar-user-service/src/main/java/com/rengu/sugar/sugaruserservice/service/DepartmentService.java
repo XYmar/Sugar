@@ -1,6 +1,7 @@
 package com.rengu.sugar.sugaruserservice.service;
 
 import com.rengu.sugar.sugaruserservice.entity.DepartmentEntity;
+import com.rengu.sugar.sugaruserservice.entity.UserEntity;
 import com.rengu.sugar.sugaruserservice.repository.DepartmentRepository;
 import com.rengu.sugar.sugaruserservice.utils.ApplicationMessage;
 import io.micrometer.core.instrument.util.StringUtils;
@@ -11,6 +12,7 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -21,10 +23,12 @@ import java.util.List;
 @Slf4j
 public class DepartmentService {
     private final DepartmentRepository departmentRepository;
+    private final UserService userService;
 
     @Autowired
-    public DepartmentService(DepartmentRepository departmentRepository) {
+    public DepartmentService(DepartmentRepository departmentRepository, UserService userService) {
         this.departmentRepository = departmentRepository;
+        this.userService = userService;
     }
 
     // 添加部门
@@ -94,7 +98,19 @@ public class DepartmentService {
             departmentEntity.setDescription(departmentEntityArgs.getDescription());
         }
 
-        departmentEntity.setUserEntities(departmentEntityArgs.getUserEntities());
+        return departmentRepository.save(departmentEntity);
+    }
+
+    // 根据Id添加部门成员
+    @CachePut(value = "Department_Cache", key = "#departmentId")
+    public DepartmentEntity saveMemberById(String departmentId, List<UserEntity> userEntityList) {
+        if (StringUtils.isEmpty(departmentId)) {
+            throw new RuntimeException(ApplicationMessage.DEPARTMENT_ID_NOT_FOUND);
+        }
+        DepartmentEntity departmentEntity = getDepartmentById(departmentId);
+        HashSet<UserEntity> set = new HashSet<>(userEntityList);
+
+        departmentEntity.setUserEntities(set);
         return departmentRepository.save(departmentEntity);
     }
 

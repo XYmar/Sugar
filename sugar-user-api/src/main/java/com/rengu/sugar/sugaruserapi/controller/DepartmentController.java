@@ -50,4 +50,11 @@ public class DepartmentController {
     public DepartmentEntity deleteDepartmentById(@PathVariable(value = "departmentId") String departmentId) {
         return departmentService.deleteDepartmentById(departmentId);
     }
+
+    // 保存部门成员
+    @PostMapping(value = "/{departmentId}/saveMember")
+    @PreAuthorize(value = "hasRole('admin')")
+    public DepartmentEntity saveMemberById(@PathVariable(value = "departmentId") String departmentId, String[] ids) {
+        return departmentService.saveMemberById(departmentId, ids);
+    }
 }

@@ -4,7 +4,6 @@ import com.rengu.sugar.sugaruserapi.entity.DepartmentEntity;
 import com.rengu.sugar.sugaruserapi.entity.RoleEntity;
 import com.rengu.sugar.sugaruserapi.entity.UserEntity;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
@@ -86,22 +85,22 @@ public interface UserFeignClient {
      */
     // 保存部门
     @PostMapping(value = "/department")
-    @PreAuthorize(value = "hasRole('admin')")
     DepartmentEntity saveDepartment(@RequestBody DepartmentEntity departmentEntity);
 
     // 查询所有用户
     @GetMapping(value = "/department")
-    @PreAuthorize(value = "hasRole('admin')")
     List<DepartmentEntity> getDepartments();
 
     // 根据Id修改部门
     @PutMapping(value = "/department/{departmentId}")
-    @PreAuthorize(value = "hasRole('admin')")
     DepartmentEntity updateDepartmentById(@PathVariable(value = "departmentId") String departmentId, @RequestBody DepartmentEntity departmentEntity);
 
     // 删除部门
     @DeleteMapping(value = "/department/{departmentId}")
-    @PreAuthorize(value = "hasRole('admin')")
     DepartmentEntity deleteDepartmentById(@PathVariable(value = "departmentId") String departmentId);
+
+    // 保存部门成员
+    @PostMapping(value = "/department/{departmentId}/saveMember")
+    DepartmentEntity saveMemberById(@PathVariable(value = "departmentId") String departmentId, @RequestParam(value = "ids") String[] ids);
 
 }

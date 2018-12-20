@@ -38,4 +38,8 @@ public class DepartmentService {
     public DepartmentEntity deleteDepartmentById(String departmentId) {
         return userFeignClient.deleteDepartmentById(departmentId);
     }
+
+    public DepartmentEntity saveMemberById(String departmentId, String[] ids) {
+        return userFeignClient.saveMemberById(departmentId, ids);
+    }
 }

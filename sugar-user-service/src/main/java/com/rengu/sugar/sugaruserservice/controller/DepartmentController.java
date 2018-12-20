@@ -1,11 +1,14 @@
 package com.rengu.sugar.sugaruserservice.controller;
 
 import com.rengu.sugar.sugaruserservice.entity.DepartmentEntity;
+import com.rengu.sugar.sugaruserservice.entity.UserEntity;
 import com.rengu.sugar.sugaruserservice.service.DepartmentService;
+import com.rengu.sugar.sugaruserservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,9 +20,12 @@ import java.util.List;
 public class DepartmentController {
     private final DepartmentService departmentService;
 
+    private final UserService userService;
+
     @Autowired
-    public DepartmentController(DepartmentService departmentService) {
+    public DepartmentController(DepartmentService departmentService, UserService userService) {
         this.departmentService = departmentService;
+        this.userService = userService;
     }
 
     // 保存部门
@@ -27,6 +33,17 @@ public class DepartmentController {
     @PreAuthorize(value = "hasRole('admin')")
     public DepartmentEntity saveDepartment(@RequestBody DepartmentEntity departmentEntity) {
         return departmentService.saveDepartment(departmentEntity);
+    }
+
+    // 保存部门成员
+    @PostMapping(value = "/{departmentId}/saveMember")
+    @PreAuthorize(value = "hasRole('admin')")
+    public DepartmentEntity saveMemberById(@PathVariable(value = "departmentId") String departmentId, @RequestParam(value = "ids") String[] ids) {
+        List<UserEntity> userEntityList = new ArrayList<>();
+        for (String id : ids) {
+            userEntityList.add(userService.getUserById(id));
+        }
+        return departmentService.saveMemberById(departmentId, userEntityList);
     }
 
     // 查询所有用户
