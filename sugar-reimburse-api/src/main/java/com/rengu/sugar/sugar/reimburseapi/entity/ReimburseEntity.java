@@ -18,7 +18,7 @@ public class ReimburseEntity {
 
     private String departmentName; //部门名称
     private String type;    // 类别
-    private String usage;   // 用途
+    private String forUsage;   // 用途
     private double money;   // 金额
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date useTime;   // 使用日期

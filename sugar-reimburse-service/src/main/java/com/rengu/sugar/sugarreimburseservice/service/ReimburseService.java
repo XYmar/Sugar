@@ -39,7 +39,7 @@ public class ReimburseService {
             throw new RuntimeException(ReimburseMessage.REIMBURSE_DEPARTMENTNAME_ARGS_NOT_FOUND);
         }
 
-        if (StringUtils.isEmpty(reimburseEntity.getUsage())) {
+        if (StringUtils.isEmpty(reimburseEntity.getForUsage())) {
             throw new RuntimeException(ReimburseMessage.REIMBURSE_USAGE_ARGS_NOT_FOUND);
         }
 
@@ -79,8 +79,8 @@ public class ReimburseService {
             reimburseEntity.setType(reimburseEntityArgs.getType());
         }
 
-        if (!StringUtils.isEmpty(reimburseEntityArgs.getUsage()) && !reimburseEntityArgs.getUsage().equals(reimburseEntityArgs.getUsage())) {
-            reimburseEntity.setUsage(reimburseEntityArgs.getUsage());
+        if (!StringUtils.isEmpty(reimburseEntityArgs.getForUsage()) && !reimburseEntityArgs.getForUsage().equals(reimburseEntityArgs.getForUsage())) {
+            reimburseEntity.setForUsage(reimburseEntityArgs.getForUsage());
         }
 
         if (!(reimburseEntityArgs.getUseTime() == null) && !reimburseEntityArgs.getUseTime().equals(reimburseEntityArgs.getUseTime())) {
