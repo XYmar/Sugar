@@ -24,7 +24,7 @@ public class ReimburseController {
 
     // 保存一条报销记录
     @PostMapping
-    public ReimburseEntity saveReimburse(@RequestBody ReimburseEntity reimburseEntity) {
+    public ReimburseEntity saveReimburse(ReimburseEntity reimburseEntity) {
         return reimburseService.saveReimburse(reimburseEntity);
     }
 
@@ -36,7 +36,7 @@ public class ReimburseController {
 
     // 根据Id修改某条报销记录
     @PutMapping(value = "/{reimburseId}")
-    public ReimburseEntity updateReimburseById(@PathVariable(value = "reimburseId") String reimburseId, @RequestBody ReimburseEntity reimburseEntity) {
+    public ReimburseEntity updateReimburseById(@PathVariable(value = "reimburseId") String reimburseId, ReimburseEntity reimburseEntity) {
         return reimburseService.updateReimburseById(reimburseId, reimburseEntity);
     }
 
