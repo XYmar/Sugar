@@ -24,4 +24,8 @@ public class ReimburseFormEntity {
     private double totalPay;
     private String description;
     private String userId;
+    private String startTime;
+    private String endTime;
+    private int isCatered;
+    private double benefitNumber;
 }

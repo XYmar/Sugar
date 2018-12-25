@@ -76,6 +76,22 @@ public class ReimburseFormService {
             reimburseFormEntity.setDescription(reimburseFormEntityArgs.getDescription());
         }
 
+        if (!StringUtils.isEmpty(reimburseFormEntityArgs.getStartTime()) && (reimburseFormEntity.getStartTime() == null || !reimburseFormEntity.getStartTime().equals(reimburseFormEntityArgs.getStartTime()))) {
+            reimburseFormEntity.setStartTime(reimburseFormEntityArgs.getStartTime());
+        }
+
+        if (!StringUtils.isEmpty(reimburseFormEntityArgs.getEndTime()) && (reimburseFormEntity.getEndTime() == null || !reimburseFormEntity.getEndTime().equals(reimburseFormEntityArgs.getEndTime()))) {
+            reimburseFormEntity.setEndTime(reimburseFormEntityArgs.getEndTime());
+        }
+
+        if (!StringUtils.isEmpty(String.valueOf(reimburseFormEntityArgs.getIsCatered()))) {
+            reimburseFormEntity.setIsCatered(reimburseFormEntityArgs.getIsCatered());
+        }
+
+        if (!StringUtils.isEmpty(String.valueOf(reimburseFormEntityArgs.getBenefitNumber()))) {
+            reimburseFormEntity.setBenefitNumber(reimburseFormEntityArgs.getBenefitNumber());
+        }
+
         return reimburseFormRepository.save(reimburseFormEntity);
     }
 
