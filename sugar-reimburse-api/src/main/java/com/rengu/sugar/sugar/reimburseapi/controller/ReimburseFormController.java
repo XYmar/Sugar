@@ -39,6 +39,12 @@ public class ReimburseFormController {
         return reimburseFormService.getReimburseFormByUserId(userId);
     }
 
+    // 根据报销单id查询所有报销记录
+    @GetMapping(value = "/byReimburseFormId/{reimburseFormId}")
+    public ReimburseFormEntity getReimburseFormById(@PathVariable(value = "reimburseFormId") String reimburseFormId) {
+        return reimburseFormService.getReimburseFormById(reimburseFormId);
+    }
+
     // 根据Id修改某条报销单信息
     @PutMapping(value = "/{reimburseFormId}")
     public ReimburseFormEntity updateReimburseFormById(@PathVariable(value = "reimburseFormId") String reimburseFormId, ReimburseFormEntity reimburseFormEntity) {

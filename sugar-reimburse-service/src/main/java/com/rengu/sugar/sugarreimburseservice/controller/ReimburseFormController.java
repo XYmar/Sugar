@@ -27,10 +27,16 @@ public class ReimburseFormController {
         return reimburseFormService.saveReimburseForm(reimburseFormEntity);
     }
 
-    // 查询所有报销单
+    // 根据用户id查询所有报销单
     @GetMapping(value = "/by_user/{userId}")
     public List<ReimburseFormEntity> getReimburseFormsByUserId(@PathVariable(value = "userId") String userId) {
         return reimburseFormService.getReimburseFormByUserId(userId);
+    }
+
+    // 根据报销单id查询所有报销记录
+    @GetMapping(value = "/byReimburseFormId/{reimburseFormId}")
+    public ReimburseFormEntity getReimburseFormById(@PathVariable(value = "reimburseFormId") String reimburseFormId) {
+        return reimburseFormService.getReimburseFormById(reimburseFormId);
     }
 
     // 查询所有报销单

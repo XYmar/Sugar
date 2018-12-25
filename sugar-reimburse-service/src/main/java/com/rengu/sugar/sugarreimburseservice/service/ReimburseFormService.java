@@ -64,15 +64,15 @@ public class ReimburseFormService {
             throw new RuntimeException(ReimburseMessage.REIMBURSEFORM_ARGS_NOT_FOUND);
         }
 
-        if (!StringUtils.isEmpty(reimburseFormEntityArgs.getUsername()) && !reimburseFormEntityArgs.getUsername().equals(reimburseFormEntityArgs.getUsername())) {
+        if (!StringUtils.isEmpty(reimburseFormEntityArgs.getUsername()) && !reimburseFormEntity.getUsername().equals(reimburseFormEntityArgs.getUsername())) {
             reimburseFormEntity.setUsername(reimburseFormEntityArgs.getUsername());
         }
 
-        if (!StringUtils.isEmpty(reimburseFormEntityArgs.getUserId()) && !reimburseFormEntityArgs.getUserId().equals(reimburseFormEntityArgs.getUserId())) {
+        if (!StringUtils.isEmpty(reimburseFormEntityArgs.getUserId()) && !reimburseFormEntity.getUserId().equals(reimburseFormEntityArgs.getUserId())) {
             reimburseFormEntity.setUserId(reimburseFormEntityArgs.getUserId());
         }
 
-        if (!StringUtils.isEmpty(reimburseFormEntityArgs.getDescription()) && !reimburseFormEntityArgs.getDescription().equals(reimburseFormEntityArgs.getDescription())) {
+        if (!StringUtils.isEmpty(reimburseFormEntityArgs.getDescription()) && !reimburseFormEntity.getDescription().equals(reimburseFormEntityArgs.getDescription())) {
             reimburseFormEntity.setDescription(reimburseFormEntityArgs.getDescription());
         }
 

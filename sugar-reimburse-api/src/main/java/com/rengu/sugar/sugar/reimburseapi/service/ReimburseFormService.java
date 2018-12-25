@@ -41,4 +41,8 @@ public class ReimburseFormService {
     public List<ReimburseFormEntity> getReimburseFormByUserId(String userId) {
         return reimburseFeignClient.getReimburseFormsByUserId(userId);
     }
+
+    public ReimburseFormEntity getReimburseFormById(String reimburseFormId) {
+        return reimburseFeignClient.getReimburseFormById(reimburseFormId);
+    }
 }

@@ -20,11 +20,8 @@ public class ReimburseEntity {
     private String type;    // 类别
     private String forUsage;   // 用途
     private double money;   // 金额
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date useTime;   // 使用日期
-    private int days;    //  出差天数
+    private String useTime;   // 使用日期 时间戳
     private String description;    // 备注
 
-    private String userId;    // 用户id
-
+    private ReimburseFormEntity reimburseFormEntity;
 }
