@@ -22,10 +22,16 @@ public class UserController {
         this.userService = userService;
     }
 
+    // 判断邮箱是否已被注册
+    @GetMapping(value = "/has-email")
+    public boolean hasUserByEmail(@RequestParam(value = "email") String email) {
+        return userService.hasUserByEmail(email);
+    }
+
     // 添加用户
     @PostMapping
-    public ResultEntity saveUser(UserEntity userEntity) {
-        return ResultUtils.build(userService.saveUser(userEntity));
+    public void saveUser(UserEntity userEntity) {
+        userService.saveUser(userEntity);
     }
 
     // 查询所有用户
@@ -41,9 +47,14 @@ public class UserController {
         return ResultUtils.build(userService.getUserById(userId));
     }
 
+    // 根据角色id及验证码查询用户
+    @GetMapping(value = "/activeCode/{activeCode}")
+    public boolean getUserByEmailAndCode(@RequestParam(value = "email") String email, @PathVariable(value = "activeCode") String activeCode) {
+        return userService.getUserByEmailAndCode(email, activeCode);
+    }
+
     // 根据id修改用户
     @PutMapping(value = "/{userId}")
-    @PreAuthorize(value = "hasRole('admin')")
     public ResultEntity updateUserById(@PathVariable(value = "userId") String userId, UserEntity userEntity) {
         return ResultUtils.build(userService.updateUserById(userId, userEntity));
     }
@@ -57,7 +68,6 @@ public class UserController {
 
     // 根据Id修改密码
     @PutMapping(value = "/{userId}/password")
-    @PreAuthorize(value = "hasRole('admin')")
     public ResultEntity updatePasswordById(@PathVariable(value = "userId") String userId, @RequestParam(value = "password") String password) {
         return ResultUtils.build(userService.updatePasswordById(userId, password));
     }
@@ -67,6 +77,12 @@ public class UserController {
     @PreAuthorize(value = "hasRole('admin')")
     public ResultEntity updateRoleById(@PathVariable(value = "userId") String userId, @RequestParam(value = "roleId") String roleId) {
         return ResultUtils.build(userService.updateUserRoleById(userId, roleId));
+    }
+
+    // 根据Id激活用户
+    @PutMapping(value = "/{userId}/active")
+    public void updateEmailStateById(@PathVariable(value = "userId") String userId) {
+        userService.updateEmailStateById(userId);
     }
 
 }

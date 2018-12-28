@@ -991,66 +991,77 @@
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="249" parent="237" name="enabled">
+    <column id="249" parent="237" name="email">
       <Position>6</Position>
+      <DataType>varchar(255)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="250" parent="237" name="enabled">
+      <Position>7</Position>
       <DataType>bit(1)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="250" parent="237" name="password">
-      <Position>7</Position>
-      <DataType>varchar(255)|0s</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="251" parent="237" name="username">
+    <column id="251" parent="237" name="mail_state">
       <Position>8</Position>
-      <DataType>varchar(255)|0s</DataType>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="252" parent="237" name="email">
+    <column id="252" parent="237" name="password">
       <Position>9</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="253" parent="237" name="telephone_num">
+    <column id="253" parent="237" name="realname">
       <Position>10</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="254" parent="237" name="PRIMARY">
+    <column id="254" parent="237" name="telephone_num">
+      <Position>11</Position>
+      <DataType>varchar(255)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="255" parent="237" name="username">
+      <Position>12</Position>
+      <DataType>varchar(255)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="256" parent="237" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="255" parent="238" name="user_entity_id">
+    <column id="257" parent="238" name="user_entity_id">
       <Position>1</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="256" parent="238" name="role_entities_id">
+    <column id="258" parent="238" name="role_entities_id">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="257" parent="238" name="FK5vv3s4ecb48e1lti09rmwm7y7">
+    <index id="259" parent="238" name="FK5vv3s4ecb48e1lti09rmwm7y7">
       <ColNames>role_entities_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="258" parent="238" name="PRIMARY">
+    <key id="260" parent="238" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>user_entity_id
 role_entities_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="259" parent="238" name="FKjqfpb1p8wroj2jvdagm5x4bch">
+    <foreign-key id="261" parent="238" name="FKjqfpb1p8wroj2jvdagm5x4bch">
       <ColNames>user_entity_id</ColNames>
       <RefSchemaName>sugardb</RefSchemaName>
       <RefTableName>user_entity</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="260" parent="238" name="FK5vv3s4ecb48e1lti09rmwm7y7">
+    <foreign-key id="262" parent="238" name="FK5vv3s4ecb48e1lti09rmwm7y7">
       <ColNames>role_entities_id</ColNames>
       <RefSchemaName>sugardb</RefSchemaName>
       <RefTableName>role_entity</RefTableName>

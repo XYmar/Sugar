@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
  * Author: XYmar
  * Date: 2018/12/11 15:21
@@ -34,28 +32,28 @@ public class RoleController {
     // 查询所有角色
     @GetMapping
     @PreAuthorize(value = "hasRole('admin')")
-    public List<RoleEntity> getRoles() {
-        return roleService.getAll();
+    public ResultEntity getRoles() {
+        return ResultUtils.build(roleService.getAll());
     }
 
     // 根据id查询角色
     @GetMapping(value = "/{roleId}")
     @PreAuthorize(value = "hasRole('admin')")
-    public RoleEntity getRoleById(@PathVariable(value = "roleId") String id) {
-        return roleService.getRoleById(id);
+    public ResultEntity getRoleById(@PathVariable(value = "roleId") String id) {
+        return ResultUtils.build(roleService.getRoleById(id));
     }
 
     // 根据id修改角色
     @PutMapping(value = "/{roleId}")
     @PreAuthorize(value = "hasRole('admin')")
-    public RoleEntity updateRoleById(@PathVariable(value = "roleId") String id, RoleEntity roleEntity) {
-        return roleService.updateRoleById(id, roleEntity);
+    public ResultEntity updateRoleById(@PathVariable(value = "roleId") String id, RoleEntity roleEntity) {
+        return ResultUtils.build(roleService.updateRoleById(id, roleEntity));
     }
 
     // 根据id删除角色
     @DeleteMapping(value = "/{roleId}")
     @PreAuthorize(value = "hasRole('admin')")
-    public RoleEntity deleteRoleById(@PathVariable(value = "roleId") String id) {
-        return roleService.deleteRoleById(id);
+    public ResultEntity deleteRoleById(@PathVariable(value = "roleId") String id) {
+        return ResultUtils.build(roleService.deleteRoleById(id));
     }
 }

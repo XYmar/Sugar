@@ -32,6 +32,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.cors();
+        // 放行修改激活状态
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/user/activeCode/*").permitAll();
+        // 放行邮箱校验接口
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/user/has-email").permitAll();
         // 放行注册接口
         http.authorizeRequests().antMatchers(HttpMethod.POST, "/user").permitAll();
         // 放行监控接口

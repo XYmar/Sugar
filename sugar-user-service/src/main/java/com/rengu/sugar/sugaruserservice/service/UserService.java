@@ -13,11 +13,9 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -28,10 +26,15 @@ public class UserService {
     @Value("${config.defaultUserRoleName}")
     private String defaultUserRoleName;
 
+    private final MailService mailService;
+    private final TemplateEngine templateEngine;
+
     @Autowired
-    public UserService(UserRepository userRepository, RoleService roleService) {
+    public UserService(UserRepository userRepository, RoleService roleService, MailService mailService, TemplateEngine templateEngine) {
         this.userRepository = userRepository;
         this.roleService = roleService;
+        this.mailService = mailService;
+        this.templateEngine = templateEngine;
     }
 
     // 保存管理员用户
@@ -46,7 +49,58 @@ public class UserService {
         return userRepository.save(userEntity);
     }
 
-    // 保存用户
+    // 注册用户（邮箱，用户名，密码）
+    @CachePut(value = "User_Cache", key = "#userEntity.getId()")
+    public void saveUser(UserEntity userEntity) {
+
+        if (userEntity == null) {
+            throw new RuntimeException(ApplicationMessage.USER_ARGS_NOT_FOUND);
+        }
+
+        if (StringUtils.isEmpty(userEntity.getEmail())) {
+            throw new RuntimeException(ApplicationMessage.USER_EMAIL_ARGS_NOT_FOUND);
+        }
+
+        //UserEntity existUser = getUserByEmail(userEntity.getEmail());
+
+        if (hasUserByEmail(userEntity.getEmail())) {
+            throw new RuntimeException(ApplicationMessage.USER_EMAIL_EXISTED);
+        }
+
+        if (StringUtils.isEmpty(userEntity.getUsername())) {
+            throw new RuntimeException(ApplicationMessage.USER_USERNAME_ARGS_NOT_FOUND);
+        }
+
+        if (StringUtils.isEmpty(userEntity.getPassword())) {
+            throw new RuntimeException(ApplicationMessage.USER_PASSWORD_ARGS_NOT_FOUND);
+        }
+        userEntity.setPassword(new BCryptPasswordEncoder().encode(userEntity.getPassword()));
+
+        //userEntity.setMailState(0);
+        String activeCode = activeCode();
+        userEntity.setActiveCode(activeCode);
+
+        RoleEntity role = roleService.findRoleByName(defaultUserRoleName);
+        HashSet<RoleEntity> set = new HashSet<>();
+        set.add(role);
+        userEntity.setRoleEntities(set);
+
+        //去重
+        if (hasUserByUsername(userEntity.getUsername())) {
+            throw new RuntimeException(ApplicationMessage.USER_USERNAME_EXISTED + userEntity.getUsername());
+        }
+
+        // 保存用户信息
+        userRepository.save(userEntity);
+
+        String id = userEntity.getId();
+        String email = userEntity.getEmail();
+
+        // 发送邮件
+        mailService.sendRegisterMail(id, email, activeCode);
+    }
+
+    /*// 保存用户
     @CachePut(value = "User_Cache", key = "#userEntity.getId()")
     public UserEntity saveUser(UserEntity userEntity) {
         if (userEntity == null) {
@@ -55,6 +109,10 @@ public class UserService {
         if (StringUtils.isEmpty(userEntity.getUsername())) {
             throw new RuntimeException(ApplicationMessage.USER_USERNAME_ARGS_NOT_FOUND);
         }
+
+        *//*if (StringUtils.isEmpty(userEntity.getRealname())) {
+            throw new RuntimeException(ApplicationMessage.USER_REALNAME_ARGS_NOT_FOUND);
+        }*//*
 
         if (StringUtils.isEmpty(userEntity.getPassword())) {
             throw new RuntimeException(ApplicationMessage.USER_PASSWORD_ARGS_NOT_FOUND);
@@ -88,7 +146,7 @@ public class UserService {
         }
 
         return userRepository.save(userEntity);
-    }
+    }*/
 
     // 查询所有用户
     public List<UserEntity> getAll() {
@@ -102,6 +160,33 @@ public class UserService {
             throw new RuntimeException(ApplicationMessage.USER_ID_NOT_FOUND + userId);
         }
         return userRepository.findById(userId).get();
+    }
+
+    // 根据邮箱查询用户信息
+    @Cacheable(value = "User_Cache", key = "#userId")
+    public UserEntity getUserByEmail(String email) {
+        /*if (!hasUserByEmail(email)) {
+            throw new RuntimeException(ApplicationMessage.USER_EMAIL_ARGS_NOT_FOUND);
+        }*/
+        return userRepository.findByEmail(email);
+    }
+
+    // 根据Id查询用户信息
+    @Cacheable(value = "User_Cache", key = "#userId")
+    public boolean getUserByEmailAndCode(String email, String code) {
+        if (!hasUserByEmail(email)) {
+            throw new RuntimeException(ApplicationMessage.USER_EMAIL_ARGS_NOT_FOUND);
+        } else {
+            UserEntity userEntity = userRepository.findByEmail(email);
+            if (userEntity.getActiveCode().equals(code)) {
+                userEntity.setMailState(true);
+                userRepository.save(userEntity);
+                return true;
+            } else {
+                return false;
+            }
+        }
+
     }
 
     // 根据Id修改用户
@@ -121,6 +206,11 @@ public class UserService {
             }
             userEntity.setUsername(userEntityArgs.getUsername());
         }
+
+        if (!StringUtils.isEmpty(userEntityArgs.getRealname()) && (userEntity.getRealname() == null || !userEntity.getRealname().equals(userEntityArgs.getRealname()))) {
+            userEntity.setRealname(userEntityArgs.getRealname());
+        }
+
         if (!StringUtils.isEmpty(userEntityArgs.getTelephoneNum()) && !userEntity.getTelephoneNum().equals(userEntityArgs.getTelephoneNum())) {
             if (hasUserByTelephoneNum(userEntityArgs.getTelephoneNum())) {
                 throw new RuntimeException(ApplicationMessage.USER_TELEPHONENUM_EXISTED);
@@ -167,6 +257,14 @@ public class UserService {
         return userRepository.save(userEntity);
     }
 
+    // 根据id激活用户
+    @CachePut(value = "User_Cache", key = "#userId")
+    public void updateEmailStateById(String userId) {
+        UserEntity userEntity = getUserById(userId);
+        userEntity.setMailState(true);
+        userRepository.save(userEntity);
+    }
+
     // 根据Id删除用户
     @CacheEvict(value = "User_Cache", key = "#userId")
     public UserEntity deleteUserById(String userId) {
@@ -210,14 +308,24 @@ public class UserService {
 
     // 根据邮箱查询用户是否存在
     public boolean hasUserByEmail(String email) {
-        if (StringUtils.isEmpty(email)) {
-            return false;
+        if (StringUtils.isEmpty(email) || !email.matches("^\\w+@(\\w+\\.)+\\w+$")) {
+            throw new RuntimeException(ApplicationMessage.USER_EMAIL_ARGS_NOT_FOUND);
         }
-        return userRepository.findByEmail(email).isPresent();
+        return userRepository.existsByEmail(email);
     }
 
     public List<UserEntity> getUserByRoleId(String roleId) {
         RoleEntity roleEntity = roleService.getRoleById(roleId);
         return userRepository.findByRoleEntities(roleEntity);
+    }
+
+    public String activeCode() {
+        String str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        StringBuilder sb = new StringBuilder(4);
+        for (int i = 0; i < 4; i++) {
+            char ch = str.charAt(new Random().nextInt(str.length()));
+            sb.append(ch);
+        }
+        return sb.toString();
     }
 }
