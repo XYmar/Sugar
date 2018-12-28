@@ -26,9 +26,14 @@ public class UserService implements UserDetailsService {
         return null;
     }
 
+    // 判断邮箱是否已被注册
+    public boolean hasUserByEmail(String email) {
+        return userFeignClient.hasUserByEmail(email);
+    }
+
     // 添加用户
-    public UserEntity saveUser(UserEntity userEntity) {
-        return userFeignClient.saveUser(userEntity);
+    public void saveUser(UserEntity userEntity) {
+        userFeignClient.saveUser(userEntity);
     }
 
     // 查询所有用户
@@ -59,5 +64,13 @@ public class UserService implements UserDetailsService {
     // 根据id修改角色
     public UserEntity updateUserRoleById(String userId, String roleId) {
         return userFeignClient.updateRoleById(userId, roleId);
+    }
+
+    public void updateEmailStateById(String userId) {
+        userFeignClient.updateEmailStateById(userId);
+    }
+
+    public boolean getUserByEmailAndCode(String email, String activeCode) {
+        return userFeignClient.getUserByEmailAndCode(email, activeCode);
     }
 }

@@ -1,5 +1,6 @@
 package com.rengu.sugar.sugaruserservice.service;
 
+import com.rengu.sugar.sugaruserservice.utils.ApplicationMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -22,10 +26,12 @@ public class MailService {
     private final JavaMailSender mailSender;
     @Value("${mail.fromMail.addr}")
     private String from;
+    private final TemplateEngine templateEngine;
 
     @Autowired
-    public MailService(JavaMailSender mailSender) {
+    public MailService(JavaMailSender mailSender, TemplateEngine templateEngine) {
         this.mailSender = mailSender;
+        this.templateEngine = templateEngine;
     }
 
     public void sendSimpleMail(String to, String subject, String content) {
@@ -55,6 +61,29 @@ public class MailService {
             logger.info("html邮件发送成功");
         } catch (MessagingException e) {
             logger.error("发送html邮件时发生异常！", e);
+        }
+    }
+
+    @Async
+    public void sendRegisterMail(String id, String email, String activeCode) {
+        MimeMessage message = mailSender.createMimeMessage();
+        String register_link = "http://192.168.31.134:8080/SUGAR-USER-API/user/" + id + "/active";
+//创建邮件正文
+        Context context = new Context();
+        //context.setVariable("register_link", register_link);
+        context.setVariable("activeCode", activeCode);
+        String emailContent = templateEngine.process("UserCodeRegister", context);
+        try {
+//true表示需要创建一个multipart message
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setFrom(from);
+            helper.setTo(email);
+            helper.setSubject("仁谷管理系统激活邮件");
+            helper.setText(emailContent, true);
+            mailSender.send(message);
+            logger.info("html邮件发送成功");
+        } catch (MessagingException e) {
+            throw new RuntimeException(ApplicationMessage.MAIL_SEND_ERROR);
         }
     }
 }

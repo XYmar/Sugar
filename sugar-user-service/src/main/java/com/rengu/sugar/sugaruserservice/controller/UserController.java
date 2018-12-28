@@ -21,8 +21,8 @@ public class UserController {
 
     // 添加用户
     @PostMapping
-    public UserEntity saveUser(@RequestBody UserEntity userEntity) {
-        return userService.saveUser(userEntity);
+    public void saveUser(@RequestBody UserEntity userEntity) {
+        userService.saveUser(userEntity);
     }
 
     // 查询所有用户
@@ -51,6 +51,12 @@ public class UserController {
         return userService.getUserByRoleId(roleId);
     }
 
+    // 根据角色id及验证码查询用户
+    @GetMapping(value = "/activeCode/{activeCode}")
+    public boolean getUserByIdAndCode(@RequestParam(value = "email") String email, @PathVariable(value = "activeCode") String activeCode) {
+        return userService.getUserByEmailAndCode(email, activeCode);
+    }
+
     // 根据Id修改用户
     @PutMapping(value = "/{userId}")
     public UserEntity updateUserById(@PathVariable(value = "userId") String userId, @RequestBody UserEntity userEntity) {
@@ -70,6 +76,13 @@ public class UserController {
         return userService.updateUserRoleById(userId, roleId);
     }
 
+    // 根据Id激活用户
+    @PutMapping(value = "/{userId}/active")
+    public void updateEmailStateById(@PathVariable(value = "userId") String userId) {
+        userService.updateEmailStateById(userId);
+    }
+
+
     // 删除用户
     @DeleteMapping(value = "/{userId}")
     @PreAuthorize(value = "hasRole('admin')")
@@ -81,5 +94,11 @@ public class UserController {
     @GetMapping(value = "/has-username")
     public boolean hasUserByUsername(@RequestParam(value = "username") String username) {
         return userService.hasUserByUsername(username);
+    }
+
+    // 查看邮箱是否已被注册；根据邮箱查看用户是否存在
+    @GetMapping(value = "/has-email")
+    public boolean hasUserByEmail(@RequestParam(value = "email") String email) {
+        return userService.hasUserByEmail(email);
     }
 }
