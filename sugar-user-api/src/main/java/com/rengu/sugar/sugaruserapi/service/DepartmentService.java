@@ -42,4 +42,8 @@ public class DepartmentService {
     public DepartmentEntity saveMemberById(String departmentId, String[] ids) {
         return userFeignClient.saveMemberById(departmentId, ids);
     }
+
+    public DepartmentEntity deleteDepartmentMemberById(String departmentId, String userId) {
+        return userFeignClient.deleteDepartmentMemberById(departmentId, userId);
+    }
 }

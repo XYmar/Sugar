@@ -66,4 +66,11 @@ public class DepartmentController {
     public DepartmentEntity deleteDepartmentById(@PathVariable(value = "departmentId") String departmentId) {
         return departmentService.deleteDepartmentById(departmentId);
     }
+
+    // 删除部门成员
+    @PutMapping(value = "/{departmentId}/deleteMember")
+    @PreAuthorize(value = "hasRole('admin')")
+    public DepartmentEntity deleteDepartmentMemberById(@PathVariable(value = "departmentId") String departmentId, @RequestBody String userId) {
+        return departmentService.deleteDepartmentMemberById(departmentId, userId);
+    }
 }

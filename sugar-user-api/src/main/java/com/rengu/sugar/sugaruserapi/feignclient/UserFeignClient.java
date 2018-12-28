@@ -103,4 +103,8 @@ public interface UserFeignClient {
     @PostMapping(value = "/department/{departmentId}/saveMember")
     DepartmentEntity saveMemberById(@PathVariable(value = "departmentId") String departmentId, @RequestParam(value = "ids") String[] ids);
 
+    // 删除部门成员
+    @PutMapping(value = "/department/{departmentId}/deleteMember")
+    DepartmentEntity deleteDepartmentMemberById(@PathVariable(value = "departmentId") String departmentId, @RequestBody String userId);
+
 }

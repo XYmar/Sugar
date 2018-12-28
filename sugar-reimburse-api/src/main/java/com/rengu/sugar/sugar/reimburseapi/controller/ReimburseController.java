@@ -1,11 +1,11 @@
 package com.rengu.sugar.sugar.reimburseapi.controller;
 
+import com.rengu.sugar.sugar.reimburseapi.Utils.ResultUtils;
 import com.rengu.sugar.sugar.reimburseapi.entity.ReimburseEntity;
+import com.rengu.sugar.sugar.reimburseapi.entity.ResultEntity;
 import com.rengu.sugar.sugar.reimburseapi.service.ReimburseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * Author: XYmar
@@ -23,25 +23,25 @@ public class ReimburseController {
 
     // 保存一条报销记录
     @PostMapping(value = "byReimburseFormId/{reimburseFormId}")
-    public ReimburseEntity saveReimburse(@PathVariable(value = "reimburseFormId") String reimburseFormId, ReimburseEntity reimburseEntity) {
-        return reimburseService.saveReimburse(reimburseFormId, reimburseEntity);
+    public ResultEntity saveReimburse(@PathVariable(value = "reimburseFormId") String reimburseFormId, ReimburseEntity reimburseEntity) {
+        return ResultUtils.build(reimburseService.saveReimburse(reimburseFormId, reimburseEntity));
     }
 
     // 根据报销单id查询所有报销记录
     @GetMapping(value = "/byReimburseFormId/{reimburseFormId}")
-    public List<ReimburseEntity> getReimbursesByReimburseFormId(@PathVariable(value = "reimburseFormId") String reimburseFormId) {
-        return reimburseService.getReimbursesByReimburseFormId(reimburseFormId);
+    public ResultEntity getReimbursesByReimburseFormId(@PathVariable(value = "reimburseFormId") String reimburseFormId) {
+        return ResultUtils.build(reimburseService.getReimbursesByReimburseFormId(reimburseFormId));
     }
 
     // 根据Id修改某条报销记录
     @PutMapping(value = "/{reimburseId}")
-    public ReimburseEntity updateReimburseById(@PathVariable(value = "reimburseId") String reimburseId, ReimburseEntity reimburseEntity) {
-        return reimburseService.updateReimburseById(reimburseId, reimburseEntity);
+    public ResultEntity updateReimburseById(@PathVariable(value = "reimburseId") String reimburseId, ReimburseEntity reimburseEntity) {
+        return ResultUtils.build(reimburseService.updateReimburseById(reimburseId, reimburseEntity));
     }
 
     // 根据id删除报销记录
     @DeleteMapping(value = "/{reimburseId}")
-    public ReimburseEntity deleteReimburseById(@PathVariable(value = "reimburseId") String reimburseId) {
-        return reimburseService.deleteReimburseById(reimburseId);
+    public ResultEntity deleteReimburseById(@PathVariable(value = "reimburseId") String reimburseId) {
+        return ResultUtils.build(reimburseService.deleteReimburseById(reimburseId));
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Author: XYmar
@@ -111,6 +112,18 @@ public class DepartmentService {
         HashSet<UserEntity> set = new HashSet<>(userEntityList);
 
         departmentEntity.setUserEntities(set);
+        return departmentRepository.save(departmentEntity);
+    }
+
+    // 根据部门id和用户id删除部门成员
+    @CachePut(value = "Department_Cache", key = "#departmentId")
+    public DepartmentEntity deleteDepartmentMemberById(String departmentId, String userId) {
+        DepartmentEntity departmentEntity = getDepartmentById(departmentId);
+        UserEntity userEntity = userService.getUserById(userId);
+        Set<UserEntity> userEntitySet = departmentEntity.getUserEntities();
+        userEntitySet.remove(userEntity);
+        departmentEntity.setUserEntities(userEntitySet);
+
         return departmentRepository.save(departmentEntity);
     }
 
