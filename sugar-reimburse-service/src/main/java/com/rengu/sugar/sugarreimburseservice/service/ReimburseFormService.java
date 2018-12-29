@@ -2,6 +2,7 @@ package com.rengu.sugar.sugarreimburseservice.service;
 
 import com.rengu.sugar.sugarreimburseservice.entity.ReimburseFormEntity;
 import com.rengu.sugar.sugarreimburseservice.repository.ReimburseFormRepository;
+import com.rengu.sugar.sugarreimburseservice.repository.ReimburseRepository;
 import com.rengu.sugar.sugarreimburseservice.utils.ReimburseMessage;
 import io.micrometer.core.instrument.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,12 +22,16 @@ import java.util.List;
  */
 @Service
 @Slf4j
+@Transactional
 public class ReimburseFormService {
     private final ReimburseFormRepository reimburseFormRepository;
 
+    private final ReimburseRepository reimburseRepository;
+
     @Autowired
-    public ReimburseFormService(ReimburseFormRepository reimburseFormRepository) {
+    public ReimburseFormService(ReimburseFormRepository reimburseFormRepository, ReimburseRepository reimburseRepository) {
         this.reimburseFormRepository = reimburseFormRepository;
+        this.reimburseRepository = reimburseRepository;
     }
 
     // 新建一个报销单
@@ -121,6 +127,10 @@ public class ReimburseFormService {
     @CacheEvict(value = "ReimburseForm_Cache", key = "#reimburseFormId")
     public ReimburseFormEntity deleteReimburseFormById(String reimburseFormId) {
         ReimburseFormEntity reimburseFormEntity = getReimburseFormById(reimburseFormId);
+        reimburseRepository.deleteAllByReimburseFormEntity(reimburseFormEntity);
+        // reimburseRepository.findByReimburseFormEntity(reimburseFormEntity).clear();
+        /*List<ReimburseEntity> reimburseEntityList = reimburseRepository.findByReimburseFormEntity(reimburseFormEntity);
+        reimburseEntityList.removeAll(reimburseEntityList);*/
         reimburseFormRepository.delete(reimburseFormEntity);
         return reimburseFormEntity;
     }
