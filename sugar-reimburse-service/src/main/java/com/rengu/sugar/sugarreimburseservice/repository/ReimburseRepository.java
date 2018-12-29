@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface ReimburseRepository extends JpaRepository<ReimburseEntity, String> {
     List<ReimburseEntity> findByReimburseFormEntity(ReimburseFormEntity reimburseFormEntity);
+
+    void deleteAllByReimburseFormEntity(ReimburseFormEntity reimburseFormEntity);
 }
