@@ -6,18 +6,36 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="sugar-api-gateway-server" />
+        <module name="sugar-authorization-server" />
         <module name="sugar-config-server" />
+        <module name="sugar-eureka-server" />
+        <module name="sugar-reimburse-api" />
+        <module name="sugar-reimburse-service" />
+        <module name="sugar-user-api" />
         <module name="sugar-user-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="sugar-api-gateway-server" target="1.8" />
+      <module name="sugar-authorization-server" target="1.8" />
       <module name="sugar-config-server" target="1.8" />
+      <module name="sugar-eureka-server" target="1.8" />
+      <module name="sugar-reimburse-api" target="1.8" />
+      <module name="sugar-reimburse-service" target="1.8" />
+      <module name="sugar-user-api" target="1.8" />
       <module name="sugar-user-service" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="sugar-api-gateway-server" options="-parameters" />
+      <module name="sugar-authorization-server" options="-parameters" />
       <module name="sugar-config-server" options="-parameters" />
+      <module name="sugar-eureka-server" options="-parameters" />
+      <module name="sugar-reimburse-api" options="-parameters" />
+      <module name="sugar-reimburse-service" options="-parameters" />
+      <module name="sugar-user-api" options="-parameters" />
       <module name="sugar-user-service" options="-parameters" />
     </option>
   </component>

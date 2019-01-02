@@ -5,6 +5,12 @@
       <list>
         <option value="$PROJECT_DIR$/sugar-config-server/pom.xml" />
         <option value="$PROJECT_DIR$/sugar-user-service/pom.xml" />
+        <option value="$PROJECT_DIR$/sugar-eureka-server/pom.xml" />
+        <option value="$PROJECT_DIR$/sugar-authorization-server/pom.xml" />
+        <option value="$PROJECT_DIR$/sugar-api-gateway-server/pom.xml" />
+        <option value="$PROJECT_DIR$/sugar-user-api/pom.xml" />
+        <option value="$PROJECT_DIR$/sugar-reimburse-service/pom.xml" />
+        <option value="$PROJECT_DIR$/sugar-reimburse-api/pom.xml" />
       </list>
     </option>
   </component>
