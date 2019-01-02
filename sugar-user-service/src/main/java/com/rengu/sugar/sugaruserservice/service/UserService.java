@@ -46,6 +46,7 @@ public class UserService {
             roleEntitySet = new HashSet<>(Arrays.asList(roleEntities));
         }
         userEntity.setRoleEntities(roleEntitySet);
+        userEntity.setMailState(true);
         return userRepository.save(userEntity);
     }
 
@@ -100,53 +101,6 @@ public class UserService {
         mailService.sendRegisterMail(id, email, activeCode);
     }
 
-    /*// 保存用户
-    @CachePut(value = "User_Cache", key = "#userEntity.getId()")
-    public UserEntity saveUser(UserEntity userEntity) {
-        if (userEntity == null) {
-            throw new RuntimeException(ApplicationMessage.USER_ARGS_NOT_FOUND);
-        }
-        if (StringUtils.isEmpty(userEntity.getUsername())) {
-            throw new RuntimeException(ApplicationMessage.USER_USERNAME_ARGS_NOT_FOUND);
-        }
-
-        *//*if (StringUtils.isEmpty(userEntity.getRealname())) {
-            throw new RuntimeException(ApplicationMessage.USER_REALNAME_ARGS_NOT_FOUND);
-        }*//*
-
-        if (StringUtils.isEmpty(userEntity.getPassword())) {
-            throw new RuntimeException(ApplicationMessage.USER_PASSWORD_ARGS_NOT_FOUND);
-        }
-        userEntity.setPassword(new BCryptPasswordEncoder().encode(userEntity.getPassword()));
-
-        if (StringUtils.isEmpty(userEntity.getTelephoneNum())) {
-            throw new RuntimeException(ApplicationMessage.USER_TELEPHONENUM_ARGS_NOT_FOUND);
-        }
-
-        if (StringUtils.isEmpty(userEntity.getEmail())) {
-            throw new RuntimeException(ApplicationMessage.USER_EMAIL_ARGS_NOT_FOUND);
-        }
-
-        RoleEntity role = roleService.findRoleByName(defaultUserRoleName);
-        HashSet<RoleEntity> set = new HashSet<>();
-        set.add(role);
-        userEntity.setRoleEntities(set);
-
-        //去重
-        if (hasUserByUsername(userEntity.getUsername())) {
-            throw new RuntimeException(ApplicationMessage.USER_USERNAME_EXISTED + userEntity.getUsername());
-        }
-
-        if (hasUserByTelephoneNum(userEntity.getTelephoneNum())) {
-            throw new RuntimeException(ApplicationMessage.USER_TELEPHONENUM_EXISTED);
-        }
-
-        if (hasUserByEmail(userEntity.getEmail())) {
-            throw new RuntimeException(ApplicationMessage.USER_EMAIL_EXISTED);
-        }
-
-        return userRepository.save(userEntity);
-    }*/
 
     // 查询所有用户
     public List<UserEntity> getAll() {

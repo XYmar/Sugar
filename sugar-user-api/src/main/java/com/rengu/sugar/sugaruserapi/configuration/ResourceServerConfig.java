@@ -38,6 +38,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/user/has-email").permitAll();
         // 放行注册接口
         http.authorizeRequests().antMatchers(HttpMethod.POST, "/user").permitAll();
+        // 放行根据用户名查询用户信息接口
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/user/by-username").permitAll();
         // 放行监控接口
         http.authorizeRequests().antMatchers("/actuator/**").permitAll();
         // 放行swagger2文档页面

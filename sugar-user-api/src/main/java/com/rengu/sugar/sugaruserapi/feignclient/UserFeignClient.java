@@ -26,6 +26,10 @@ public interface UserFeignClient {
     @GetMapping(value = "/user")
     List<UserEntity> getUsers();
 
+    // 根据用户名查询用户
+    @GetMapping(value = "/user/by-username")
+    UserEntity getUserByUsername(@RequestParam(value = "username") String username);
+
     // 根据Id查询用户
     @GetMapping(value = "/user/{userId}")
     UserEntity getUserById(@PathVariable(value = "userId") String userId);

@@ -73,4 +73,8 @@ public class UserService implements UserDetailsService {
     public boolean getUserByEmailAndCode(String email, String activeCode) {
         return userFeignClient.getUserByEmailAndCode(email, activeCode);
     }
+
+    public UserEntity getUserByUsername(String username) {
+        return userFeignClient.getUserByUsername(username);
+    }
 }

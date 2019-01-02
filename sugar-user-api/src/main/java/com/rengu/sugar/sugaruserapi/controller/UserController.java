@@ -41,6 +41,12 @@ public class UserController {
         return ResultUtils.build(userService.getUsers());
     }
 
+    // 根据用户名查询用户
+    @GetMapping(value = "/by-username")
+    public UserEntity getUserByUsername(@RequestParam(value = "username") String username) {
+        return userService.getUserByUsername(username);
+    }
+
     // 根据id查询用户
     @GetMapping(value = "/{userId}")
     public ResultEntity getUserById(@PathVariable(value = "userId") String userId) {
