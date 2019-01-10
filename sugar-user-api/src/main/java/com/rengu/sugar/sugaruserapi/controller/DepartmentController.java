@@ -4,6 +4,7 @@ import com.rengu.sugar.sugaruserapi.Utils.ResultUtils;
 import com.rengu.sugar.sugaruserapi.entity.DepartmentEntity;
 import com.rengu.sugar.sugaruserapi.entity.ResultEntity;
 import com.rengu.sugar.sugaruserapi.service.DepartmentService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,7 @@ public class DepartmentController {
 
 
     // 保存部门
+    @ApiOperation(value = "保存部门", notes = "保存部门")
     @PostMapping
     @PreAuthorize(value = "hasRole('admin')")
     public ResultEntity saveDepartment(DepartmentEntity departmentEntity) {
@@ -31,6 +33,7 @@ public class DepartmentController {
     }
 
     // 查询所有用户
+    @ApiOperation(value = "查询所有用户", notes = "查询所有用户")
     @GetMapping
     @PreAuthorize(value = "hasRole('admin')")
     public ResultEntity getDepartments() {
@@ -38,6 +41,7 @@ public class DepartmentController {
     }
 
     // 根据Id修改部门
+    @ApiOperation(value = "根据Id修改部门", notes = "根据Id修改部门")
     @PutMapping(value = "/{departmentId}")
     @PreAuthorize(value = "hasRole('admin')")
     public ResultEntity updateDepartmentById(@PathVariable(value = "departmentId") String departmentId, DepartmentEntity departmentEntity) {
@@ -45,6 +49,7 @@ public class DepartmentController {
     }
 
     // 删除部门
+    @ApiOperation(value = "删除部门", notes = "删除部门")
     @DeleteMapping(value = "/{departmentId}")
     @PreAuthorize(value = "hasRole('admin')")
     public ResultEntity deleteDepartmentById(@PathVariable(value = "departmentId") String departmentId) {
@@ -52,6 +57,7 @@ public class DepartmentController {
     }
 
     // 保存部门成员
+    @ApiOperation(value = "保存部门成员", notes = "保存部门成员")
     @PostMapping(value = "/{departmentId}/saveMember")
     @PreAuthorize(value = "hasRole('admin')")
     public ResultEntity saveMemberById(@PathVariable(value = "departmentId") String departmentId, String[] ids) {
@@ -59,6 +65,7 @@ public class DepartmentController {
     }
 
     // 删除部门成员
+    @ApiOperation(value = "删除部门成员", notes = "删除部门成员")
     @PutMapping(value = "/{departmentId}/deleteMember")
     @PreAuthorize(value = "hasRole('admin')")
     public ResultEntity deleteDepartmentMemberById(@PathVariable(value = "departmentId") String departmentId, String userId) {

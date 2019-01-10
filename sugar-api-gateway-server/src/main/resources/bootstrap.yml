@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: sugar-api-gateway-server
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: sugar-config-server
+      profile: dev
+      username: sugar
+      password: sugar
+    gateway:
+      locator:
+        enabled: true
+      routes:
+      - id: sugar-user-api
+        uri: lb://sugar-user-api
+        predicates:
+        - Path=/admin/**
+        filters:
+        - SwaggerHeaderFilter
+        - StripPrefix=1
+      - id: sugar-reimburse-api
+        uri: lb://sugar-reimburse-api
+        predicates:
+        - Path=/reimburse/**
+        filters:
+        - SwaggerHeaderFilter
+        - StripPrefix=1
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka/

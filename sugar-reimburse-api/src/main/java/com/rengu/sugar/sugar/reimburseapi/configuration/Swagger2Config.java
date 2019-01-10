@@ -1,4 +1,4 @@
-package com.rengu.sugar.sugaruserapi.configuration;
+package com.rengu.sugar.sugar.reimburseapi.configuration;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.context.annotation.Bean;
