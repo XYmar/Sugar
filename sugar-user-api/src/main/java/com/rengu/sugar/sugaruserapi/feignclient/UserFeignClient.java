@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Component
-@FeignClient(name = "sugar-user-service")
+@FeignClient(name = "sugar-user-service",fallback = UserRemoteHystrix.class)
 public interface UserFeignClient {
     /**
      * 用户相关
