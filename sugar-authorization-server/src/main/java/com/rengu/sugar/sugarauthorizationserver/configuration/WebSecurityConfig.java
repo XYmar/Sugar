@@ -47,6 +47,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //        http.authorizeRequests().antMatchers(HttpMethod.OPTIONS).permitAll();
         // 放行监控接口
         http.authorizeRequests().antMatchers("/actuator/**").permitAll();
+        // 放心hystrix接口
+        http.authorizeRequests().antMatchers("/hystrix/**").permitAll();
+
+        http.authorizeRequests().antMatchers("/webjars/**").permitAll();
         http.authorizeRequests().anyRequest().authenticated();
     }
 }
